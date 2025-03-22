@@ -23,8 +23,9 @@ class TicketPartUpdate(BaseModel):
 class TicketPartInDBBase(TicketPartBase):
     id: int
     
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 
 class TicketPart(TicketPartInDBBase):
@@ -32,10 +33,15 @@ class TicketPart(TicketPartInDBBase):
     total: float = 0
     profit: float = 0
     
-    @staticmethod
-    def from_orm(ticket_part):
+    @classmethod
+    def model_validate(cls, ticket_part, **kwargs):
         obj = TicketPart(**ticket_part.__dict__)
-        obj.part = Part.from_orm(ticket_part.part)
+        obj.part = Part.model_validate(ticket_part.part)
         obj.total = ticket_part.calculate_total()
         obj.profit = ticket_part.calculate_profit()
         return obj
+        
+    # Keep backward compatibility
+    @classmethod
+    def from_orm(cls, obj):
+        return cls.model_validate(obj)

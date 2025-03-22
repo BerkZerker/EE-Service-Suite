@@ -37,8 +37,9 @@ class TicketInDBBase(TicketBase):
     updated_at: datetime
     total_parts_cost: float
     
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 
 class Ticket(TicketInDBBase):
@@ -55,8 +56,13 @@ class TicketWithDetails(TicketInDBBase):
     
     total: float = 0
     
-    @staticmethod
-    def from_orm(ticket: Any) -> 'TicketWithDetails':
+    @classmethod
+    def model_validate(cls, ticket: Any, **kwargs) -> 'TicketWithDetails':
         obj = TicketWithDetails(**ticket.__dict__)
         obj.total = ticket.calculate_total()
         return obj
+        
+    # Keep backward compatibility
+    @classmethod
+    def from_orm(cls, obj):
+        return cls.model_validate(obj)

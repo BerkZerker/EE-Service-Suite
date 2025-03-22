@@ -37,15 +37,21 @@ class PartUpdate(BaseModel):
 class PartInDBBase(PartBase):
     id: int
     
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 
 class Part(PartInDBBase):
     markup: float = 0
     
-    @staticmethod
-    def from_orm(part_obj):
+    @classmethod
+    def model_validate(cls, part_obj, **kwargs):
         obj = Part(**part_obj.__dict__)
         obj.markup = part_obj.calculate_markup()
         return obj
+        
+    # Keep backward compatibility
+    @classmethod
+    def from_orm(cls, obj):
+        return cls.model_validate(obj)

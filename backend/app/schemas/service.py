@@ -21,8 +21,9 @@ class ServiceUpdate(BaseModel):
 class ServiceInDBBase(ServiceBase):
     id: int
     
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 
 class Service(ServiceInDBBase):

@@ -22,8 +22,9 @@ class CustomerUpdate(CustomerBase):
 class CustomerInDBBase(CustomerBase):
     id: int
     
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 
 class Customer(CustomerInDBBase):

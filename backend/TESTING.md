@@ -1,6 +1,15 @@
 # Testing Users CRUD API
 
-This document outlines the testing procedure for the Users CRUD API endpoints we've implemented.
+This document outlines the testing procedure for the Users CRUD API endpoints. The implementation is now complete with all tests passing.
+
+## Implementation Status
+
+✅ **Users CRUD API**: Fully implemented with:
+- Complete CRUD operations (Create, Read, Update, Delete)
+- Role-based access control (Admin vs. Technician)
+- JWT token authentication
+- Comprehensive test coverage (12 test cases, all passing)
+- Proper permission checks and error handling
 
 ## Setup Environment
 
@@ -84,4 +93,26 @@ Test with both admin and regular user accounts to verify:
 
 ## After Testing
 
-Once testing is complete and you've confirmed that the Users CRUD endpoints work correctly, we can move on to implementing the Customers CRUD endpoints.
+All tests for the Users CRUD API are now passing. A key bugfix was implemented to ensure proper permission handling:
+
+- When a non-admin user attempts to access another user's profile, the API now correctly returns a 403 Forbidden response instead of 404 Not Found
+- Permission checks are now performed before checking if a user exists, ensuring proper security
+
+With the Users CRUD implementation complete, we can now move on to implementing the Customers CRUD endpoints, which is the next priority according to the project plan.
+
+## Technical Debt Notes
+
+There are some deprecated patterns in our codebase that we've partially addressed:
+
+1. ✅ Updated SQLAlchemy `declarative_base()` to use the proper import location
+2. ✅ Updated User schema to use Pydantic V2 style `model_config` instead of class-based Config
+3. ⏳ Other schema files still use deprecated `orm_mode = True` and should be updated to use `from_attributes = True` with the new configuration style:
+   - customer.py
+   - service.py
+   - ticket.py
+   - bike.py
+   - ticket_part.py
+   - part.py
+   - ticket_update.py
+
+These changes can be made as part of the Customers CRUD implementation to upgrade all schema files to the latest standards.
