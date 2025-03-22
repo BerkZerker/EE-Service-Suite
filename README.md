@@ -23,10 +23,11 @@ This application provides a complete solution for e-bike service management, ena
 - **Backend**: FastAPI (Python), SQLAlchemy ORM
 - **Database**: SQLite (upgradable to PostgreSQL)
 - **Authentication**: JWT token-based auth
+- **Deployment**: Docker and Docker Compose
 
 ## Development Status
 
-This project is currently in the initial development phase. See the [Project Plan](PROJECT_PLAN.md) for detailed implementation steps and timeline.
+This project is currently in the initial development phase. All Phase 1 setup tasks are complete, including Docker containerization and database initialization. Development is now focusing on implementing the core API endpoints and frontend components. See the [Project Plan](PROJECT_PLAN.md) for detailed implementation steps and timeline.
 
 ## Getting Started
 

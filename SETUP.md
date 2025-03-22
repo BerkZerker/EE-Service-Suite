@@ -5,8 +5,46 @@
 - Python 3.9+ (for backend)
 - Node.js 18+ (for frontend)
 - npm or yarn (for frontend package management)
+- Docker and Docker Compose (for containerized setup)
 
-## Backend Setup
+## Setup Options
+
+### Option 1: Docker Setup (Recommended)
+
+1. Ensure Docker and Docker Compose are installed on your system.
+
+2. Create a `.env` file in the backend directory based on the `.env.example` template:
+   ```
+   cp backend/.env.example backend/.env
+   ```
+
+3. Build and start the containers:
+   ```
+   docker-compose up -d
+   ```
+
+4. Setup the database (first time only):
+   ```
+   # If you're using Docker Compose V2, use this command:
+   docker compose exec backend alembic upgrade head
+   
+   # For older Docker Compose versions:
+   docker-compose exec backend alembic upgrade head
+   ```
+
+5. Access the services:
+   - Frontend: http://localhost:5173
+   - Backend API: http://localhost:8000
+   - API Documentation: http://localhost:8000/docs
+
+To stop the services:
+```
+docker-compose down
+```
+
+### Option 2: Local Development Setup
+
+#### Backend Setup
 
 1. Navigate to the backend directory:
    ```
@@ -44,7 +82,7 @@
 
 The backend will be available at http://localhost:8000, and the API documentation at http://localhost:8000/docs.
 
-## Frontend Setup
+#### Frontend Setup
 
 1. Navigate to the frontend directory:
    ```

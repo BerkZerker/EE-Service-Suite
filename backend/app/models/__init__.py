@@ -1,5 +1,5 @@
 from app.models.base import Base
-from app.models.user import User, Role
+from app.models.user import User, UserRole
 from app.models.customer import Customer
 from app.models.bike import Bike
 from app.models.ticket import Ticket, TicketStatus, TicketPriority
