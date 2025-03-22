@@ -1,10 +1,10 @@
 from sqlalchemy import Column, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
 
-from app.models.base import Base
+from app.models.base import BaseModel
 
 
-class TicketPart(Base):
+class TicketPart(BaseModel):
     __tablename__ = "ticket_parts"
 
     id = Column(Integer, primary_key=True, index=True)

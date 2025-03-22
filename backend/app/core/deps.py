@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from app.core.security import SECRET_KEY, ALGORITHM
 from app.db.database import get_db
-from app.models import User
+from app.models.user import User
 from app.schemas.user import TokenPayload
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
@@ -59,7 +59,7 @@ def get_current_admin_user(
     """
     Get the current admin user.
     """
-    if current_user.role != "admin":
+    if current_user.role.value != "admin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not enough permissions",

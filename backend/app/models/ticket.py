@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 import enum
 from datetime import datetime
 
-from app.models.base import Base
+from app.models.base import BaseModel
 
 
 class TicketStatus(str, enum.Enum):
@@ -22,7 +22,7 @@ class TicketPriority(str, enum.Enum):
     URGENT = "urgent"
 
 
-class Ticket(Base):
+class Ticket(BaseModel):
     __tablename__ = "tickets"
 
     id = Column(Integer, primary_key=True, index=True)

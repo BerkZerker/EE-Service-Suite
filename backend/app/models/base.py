@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, DateTime
 from sqlalchemy.sql import func
-from app.db.database import Base
+from app.db.database import Base as SQLAlchemyBase
 
 
 class TimestampMixin:
@@ -15,7 +15,7 @@ class TimestampMixin:
     )
 
 
-class BaseModel(Base):
+class BaseModel(SQLAlchemyBase):
     """Base model with id and timestamp columns"""
     
     __abstract__ = True

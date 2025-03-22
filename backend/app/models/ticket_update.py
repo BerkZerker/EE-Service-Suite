@@ -2,11 +2,11 @@ from sqlalchemy import Column, Integer, String, Text, ForeignKey, Enum, DateTime
 from sqlalchemy.orm import relationship
 from datetime import datetime
 
-from app.models.base import Base
+from app.models.base import BaseModel
 from app.models.ticket import TicketStatus
 
 
-class TicketUpdate(Base):
+class TicketUpdate(BaseModel):
     __tablename__ = "ticket_updates"
 
     id = Column(Integer, primary_key=True, index=True)

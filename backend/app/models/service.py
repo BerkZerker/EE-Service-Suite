@@ -1,10 +1,10 @@
 from sqlalchemy import Column, Integer, String, Text, Float
 from sqlalchemy.orm import relationship
 
-from app.models.base import Base
+from app.models.base import BaseModel
 
 
-class Service(Base):
+class Service(BaseModel):
     __tablename__ = "services"
 
     id = Column(Integer, primary_key=True, index=True)

@@ -1,10 +1,10 @@
 from sqlalchemy import Column, String, Integer, ForeignKey, Text
 from sqlalchemy.orm import relationship
 
-from app.models.base import Base
+from app.models.base import BaseModel
 
 
-class Bike(Base):
+class Bike(BaseModel):
     __tablename__ = "bikes"
 
     id = Column(Integer, primary_key=True, index=True)

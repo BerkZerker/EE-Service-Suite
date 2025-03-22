@@ -1,14 +1,19 @@
 from datetime import datetime, timedelta
 from typing import Any, Union, Optional
+import os
+from dotenv import load_dotenv
 
 from jose import jwt
 from passlib.context import CryptContext
 
+# Load environment variables
+load_dotenv()
+
 # Security configuration
-SECRET_KEY = "your-secret-key"  # In production, this should be securely stored in environment variables
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
-REFRESH_TOKEN_EXPIRE_DAYS = 7
+SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key")
+ALGORITHM = os.getenv("ALGORITHM", "HS256")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
+REFRESH_TOKEN_EXPIRE_DAYS = int(os.getenv("REFRESH_TOKEN_EXPIRE_DAYS", "7"))
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 

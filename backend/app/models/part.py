@@ -1,10 +1,10 @@
 from sqlalchemy import Column, Integer, String, Text, Float, SmallInteger
 from sqlalchemy.orm import relationship
 
-from app.models.base import Base
+from app.models.base import BaseModel
 
 
-class Part(Base):
+class Part(BaseModel):
     __tablename__ = "parts"
 
     id = Column(Integer, primary_key=True, index=True)
