@@ -81,7 +81,6 @@ Future versions will expand to include Shopify integration and advanced features
 ### 6. User Management
 - Staff accounts with login credentials
 - Basic role-based permissions (Admin vs. Technician)
-- Activity logging
 
 ### 7. Data Backup
 - Automated backups to Dropbox
