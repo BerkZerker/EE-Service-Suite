@@ -1,9 +1,17 @@
-# Electric Evolution E-Bike Shop Service Tracker
+# EE Service Suite
 # PROJECT PLAN
 
 ## Project Overview
 
-The Electric Evolution E-Bike Shop Service Tracker is a comprehensive web-based system designed to streamline the management of bike service operations. This locally-hosted application will enable staff to efficiently track service tickets, manage customer relationships, monitor inventory, and analyze business performance.
+The EE Service Suite is a comprehensive web-based system designed to streamline the management of bike service operations. This locally-hosted application will enable staff to efficiently track service tickets, manage customer relationships, monitor inventory, and analyze business performance.
+
+### Core V1 Focus
+The initial version (V1) will prioritize:
+1. **Service ticket tracking** - Complete workflow from intake to delivery
+2. **Basic profit tracking** - Manual entry of parts costs and labor charges
+3. **Simple inventory management** - Essential parts tracking with costs
+
+Future versions will expand to include Shopify integration and advanced features while maintaining a foundation built for extensibility.
 
 ## Detailed Requirements
 
@@ -31,7 +39,7 @@ The Electric Evolution E-Bike Shop Service Tracker is a comprehensive web-based 
   - View archive separately from active tickets
 
 ### 2. Search and Filter System
-- Search by customer name, phone, ticket number
+- Search by customer name, phone, ticket number, bike description
 - Filter by:
   - Status
   - Date range (created/due)
@@ -45,9 +53,24 @@ The Electric Evolution E-Bike Shop Service Tracker is a comprehensive web-based 
 - Multiple bikes per customer
 
 ### 4. Inventory Tracking
-- Parts usage tracking
-- Low stock alerts
-- Cost vs. retail price tracking
+- Parts catalog with detailed specifications:
+  - Part name, description, and categorization
+  - Compatible bike makes/models
+  - Manufacturer/supplier information
+  - SKU/barcode for easy identification
+- Comprehensive stock management:
+  - Current quantity on hand
+  - Minimum stock thresholds
+  - Reorder points and preferred quantities
+- Complete financial tracking:
+  - Wholesale costs (purchase price)
+  - Retail price and markup percentages
+  - Cost history over time
+- Parts usage tracking:
+  - Automatic inventory deduction when used in service tickets
+  - Usage history and trends
+- Low stock alerts and notifications
+- Purchase order creation and management
 
 ### 5. Financial Tracking
 - Revenue per ticket
@@ -83,15 +106,33 @@ The Electric Evolution E-Bike Shop Service Tracker is a comprehensive web-based 
 - **Data Validation**: Pydantic schemas
 - **ORM**: SQLAlchemy with async support
 - **Database**: SQLite (with option to upgrade to PostgreSQL)
+- **Future API Integration**:
+  - Design with API integrations in mind (esp. Shopify)
+  - Use adapter pattern to isolate external API dependencies
+  - Implement data transformation services
 
 ### Database Schema
 - **Users Table**: Staff account information
 - **Customers Table**: Customer contact information
+  - Include fields for future Shopify customer ID mapping
 - **Bikes Table**: Bike specifications (related to customers)
 - **Tickets Table**: Service ticket details
 - **TicketUpdates Table**: Timeline of status changes and notes
 - **Parts Table**: Inventory of parts
+  - Part name, description, category
+  - SKU/barcode
+  - Compatibility data
+  - Supplier information
+  - Quantity on hand
+  - Minimum stock threshold
+  - Reorder point
+  - Wholesale cost (purchase price)
+  - Retail price and markup
+  - Last ordered date
+  - External ID field for future Shopify product mapping
 - **TicketParts Table**: Junction table linking tickets to parts
+  - Tracks which parts were used in which tickets
+  - Records quantity used and price charged
 - **Services Table**: Labor/service options with pricing
 
 ## Implementation Plan
@@ -148,17 +189,40 @@ The Electric Evolution E-Bike Shop Service Tracker is a comprehensive web-based 
 ### Phase 6: Customer & Inventory Management (Week 8)
 - [ ] Build customer profile page
 - [ ] Implement service history view
-- [ ] Create inventory management interface
-- [ ] Develop parts usage tracking
-- [ ] Implement low stock alerts
-- [ ] Build purchase order creation
+- [ ] Create comprehensive inventory management system:
+  - [ ] Parts catalog interface with detailed specifications
+  - [ ] Stock level monitoring and management
+  - [ ] Parts search and filtering
+  - [ ] Compatibility lookups by bike make/model
+- [ ] Develop parts usage tracking:
+  - [ ] Automatic inventory deduction from tickets
+  - [ ] Usage history and reporting
+- [ ] Implement inventory alerts:
+  - [ ] Low stock notifications
+  - [ ] Reorder suggestions based on usage patterns
+- [ ] Build purchase order system:
+  - [ ] PO creation with supplier information
+  - [ ] Cost tracking and order history
+  - [ ] Receiving workflow to update inventory
 
 ### Phase 7: Analytics & Reporting (Week 9)
-- [ ] Create financial dashboard
-- [ ] Implement revenue reports
-- [ ] Develop profit margin calculations
+- [ ] Create financial dashboard:
+  - [ ] Overall business performance metrics
+  - [ ] Parts profit analysis (comparing wholesale vs. retail)
+  - [ ] Inventory value reports
+- [ ] Implement revenue reports:
+  - [ ] Revenue breakdown by service type
+  - [ ] Parts vs. labor contribution
+  - [ ] Top-selling parts and services
+- [ ] Develop profit margin calculations:
+  - [ ] Ticket-level profitability
+  - [ ] Per-part profit tracking
+  - [ ] Overall margin trends over time
 - [ ] Build technician productivity metrics
-- [ ] Create exportable reports (PDF/CSV)
+- [ ] Create exportable reports (PDF/CSV):
+  - [ ] Inventory status reports
+  - [ ] Parts usage history
+  - [ ] Profit analysis
 
 ### Phase 8: Testing & Refinement (Week 10)
 - [ ] Perform comprehensive testing
@@ -222,13 +286,15 @@ The Electric Evolution E-Bike Shop Service Tracker is a comprehensive web-based 
 ## Future Enhancements
 
 ### Potential Phase 11+ Features
+- Shopify API integration:
+  - Sync inventory data with online store
+  - Import/export customer information
+  - Update product availability based on stock levels
+  - Streamline online order processing
 - SMS notifications to customers
-- Online customer portal
 - Barcode/QR code scanning for quick ticket lookup
-- Integration with accounting software
 - Advanced inventory management with supplier integration
 - Appointment scheduling system
-- Mobile app for technicians
 
 ## Risk Analysis
 

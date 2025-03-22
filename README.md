@@ -1,6 +1,6 @@
-# Electric Evolution E-Bike Shop Service Tracker
+# EE Service Suite
 
-A comprehensive web-based system for tracking and managing bicycle service operations at Electric Evolution E-Bike Shop.
+A comprehensive web-based system for tracking and managing bicycle service operations.
 
 ## Overview
 
@@ -34,4 +34,4 @@ Detailed setup and installation instructions will be provided as the project pro
 
 ## License
 
-This project is proprietary software developed for Electric Evolution E-Bike Shop.
+This project is proprietary software developed for EE Service Suite.
