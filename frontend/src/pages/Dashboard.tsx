@@ -47,7 +47,7 @@ const Dashboard = () => {
       
       <div className="mt-8">
         <h2 className="text-xl font-semibold mb-4">Welcome to EE Service Suite</h2>
-        <p className="text-gray-600">
+        <p className="text-gray-300">
           This dashboard will display key metrics and information about your service operations.
         </p>
       </div>
