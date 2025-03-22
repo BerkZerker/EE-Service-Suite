@@ -8,6 +8,7 @@
 - **Single Test**: `pytest path/to/test.py::test_function -v`
 - **Linting**: `flake8` (backend), `npm run lint` (frontend)
 - **Type Check**: `mypy .` (backend), `npm run typecheck` (frontend)
+- **Database Migration**: `alembic upgrade head` (backend)
 
 ## Code Style Guidelines
 - **Frontend**: React 18 with functional components and hooks
@@ -21,3 +22,17 @@
 - **Authentication**: JWT token-based authentication
 - **Component Structure**: Layout, Page, and Reusable UI components
 - **State Management**: React Context API + hooks
+
+## Project Progress
+- **Phase 1**: ✅ Project Setup & Foundation
+- **Phase 2**: 🔄 Database & Backend Core
+  - Completed:
+    - Database schema design
+    - Database migrations
+    - Authentication system
+    - Middleware setup
+  - Next steps:
+    - CRUD API endpoints
+    - Error handling
+    - API documentation
+- **Phase 3**: 📅 Frontend Foundation

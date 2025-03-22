@@ -27,10 +27,14 @@
    pip install -r requirements.txt
    ```
 
-5. Set up the database (initial migration):
+5. Set up the database:
    ```
-   alembic revision --autogenerate -m "initial"
+   # Apply the initial migration
    alembic upgrade head
+   
+   # For future migrations, create and apply
+   # alembic revision --autogenerate -m "migration description"
+   # alembic upgrade head
    ```
 
 6. Run the development server:

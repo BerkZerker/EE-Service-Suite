@@ -1,2 +1,9 @@
-# Import all models here so they are discovered by alembic
-from app.models.user import User
+from app.models.base import Base
+from app.models.user import User, Role
+from app.models.customer import Customer
+from app.models.bike import Bike
+from app.models.ticket import Ticket, TicketStatus, TicketPriority
+from app.models.ticket_update import TicketUpdate
+from app.models.part import Part
+from app.models.ticket_part import TicketPart
+from app.models.service import Service

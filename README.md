@@ -30,7 +30,7 @@ This project is currently in the initial development phase. See the [Project Pla
 
 ## Getting Started
 
-Detailed setup and installation instructions will be provided as the project progresses.
+For setup and installation instructions, please refer to [SETUP.md](SETUP.md).
 
 ## License
 

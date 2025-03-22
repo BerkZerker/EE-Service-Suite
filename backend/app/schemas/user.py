@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr, Field
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 from app.models.user import UserRole
 
 
@@ -31,9 +31,27 @@ class UserInDB(UserBase):
     updated_at: datetime
 
     class Config:
+        orm_mode = True
         from_attributes = True
 
 
 class User(UserInDB):
     """User schema returned to clients"""
     pass
+
+
+# Token schemas
+class Token(BaseModel):
+    access_token: str
+    refresh_token: str
+    token_type: str
+
+
+class TokenPayload(BaseModel):
+    sub: Optional[int] = None
+    exp: Optional[datetime] = None
+    refresh: Optional[bool] = False
+
+
+class RefreshToken(BaseModel):
+    refresh_token: str

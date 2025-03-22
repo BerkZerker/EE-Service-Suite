@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api import api_router
+
 app = FastAPI(
     title="EE Service Suite API",
     description="API for the EE Service Suite bicycle service management system",
@@ -15,6 +17,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Include API router
+app.include_router(api_router, prefix="/api")
 
 
 @app.get("/api/health")
