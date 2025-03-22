@@ -110,3 +110,20 @@ The frontend will be available at http://localhost:5173.
 1. Run both the backend and frontend development servers.
 2. The frontend is configured to proxy API requests to the backend.
 3. Make changes to the code, and the servers will automatically reload.
+
+## API Development Priorities
+
+In accordance with our project plan, API endpoints will be developed in the following order:
+
+1. **Users CRUD** (staff accounts) - Essential for authentication and service tracking
+2. **Customers CRUD** - With logic for automatic creation during ticket creation
+3. **Tickets CRUD** - With customer lookup/creation integration
+4. **Bikes CRUD** - Implemented as a subsection of customers
+5. **Parts CRUD** - Lowest priority, to be implemented after core service functionality
+
+This priority order creates a logical workflow where:
+- Staff users are created first (authentication foundation)
+- Customer management is implemented second
+- Ticket creation with customer integration follows
+- Bikes are managed as a hierarchical relationship under customers
+- Parts/inventory is implemented last after core functionality is in place

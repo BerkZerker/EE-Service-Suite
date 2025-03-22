@@ -27,7 +27,16 @@ This application provides a complete solution for e-bike service management, ena
 
 ## Development Status
 
-This project is currently in the initial development phase. All Phase 1 setup tasks are complete, including Docker containerization and database initialization. Development is now focusing on implementing the core API endpoints and frontend components. See the [Project Plan](PROJECT_PLAN.md) for detailed implementation steps and timeline.
+This project is currently in the initial development phase. All Phase 1 setup tasks are complete, including Docker containerization and database initialization. 
+
+Development is now focusing on implementing the core API endpoints in the following priority order:
+1. Users CRUD (staff accounts)
+2. Customers CRUD (with automatic creation during ticket creation)
+3. Tickets CRUD (with customer lookup/creation logic)
+4. Bikes CRUD (as subsection of customers)
+5. Parts CRUD (lowest priority)
+
+See the [Project Plan](PROJECT_PLAN.md) for detailed implementation steps and timeline.
 
 ## Getting Started
 
