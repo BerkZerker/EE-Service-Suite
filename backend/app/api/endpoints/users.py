@@ -13,7 +13,12 @@ from app.schemas.user import User as UserSchema, UserCreate, UserUpdate
 router = APIRouter()
 
 
-@router.get("/", response_model=List[UserSchema])
+@router.get(
+    "/", 
+    response_model=List[UserSchema], 
+    summary="Get all users",
+    description="Retrieve all users with pagination. Only accessible to admin users."
+)
 def read_users(
     db: Session = Depends(get_db),
     skip: int = 0,
@@ -21,7 +26,15 @@ def read_users(
     current_user: User = Depends(get_current_admin_user),
 ) -> Any:
     """
-    Retrieve users.
+    Retrieve all users with pagination.
+    
+    Parameters:
+    - **skip**: Number of users to skip (for pagination)
+    - **limit**: Maximum number of users to return (for pagination)
+    
+    Returns:
+    - List of user objects
+    
     Only accessible to admin users.
     """
     users = db.query(User).offset(skip).limit(limit).all()
@@ -29,7 +42,11 @@ def read_users(
 
 
 @router.post(
-    "/", response_model=UserSchema, status_code=status.HTTP_201_CREATED
+    "/", 
+    response_model=UserSchema, 
+    status_code=status.HTTP_201_CREATED,
+    summary="Create new user",
+    description="Create a new user account. Only accessible to admin users."
 )
 def create_user(
     *,
@@ -38,7 +55,17 @@ def create_user(
     current_user: User = Depends(get_current_admin_user),
 ) -> Any:
     """
-    Create new user.
+    Create a new user account.
+    
+    Parameters:
+    - **user_in**: User creation data including email, username, password, full_name, and role
+    
+    Returns:
+    - Created user object
+    
+    Raises:
+    - 400: Email or username already exists
+    
     Only accessible to admin users.
     """
     # Check if user with this email or username already exists
@@ -70,17 +97,30 @@ def create_user(
     return user
 
 
-@router.get("/me", response_model=UserSchema)
+@router.get(
+    "/me", 
+    response_model=UserSchema,
+    summary="Get current user",
+    description="Get current authenticated user's profile information."
+)
 def read_user_me(
     current_user: User = Depends(get_current_active_user),
 ) -> Any:
     """
-    Get current user.
+    Get current authenticated user's profile information.
+    
+    Returns:
+    - Current user object
     """
     return current_user
 
 
-@router.put("/me", response_model=UserSchema)
+@router.put(
+    "/me", 
+    response_model=UserSchema,
+    summary="Update current user",
+    description="Update current authenticated user's profile information."
+)
 def update_user_me(
     *,
     db: Session = Depends(get_db),
@@ -88,7 +128,16 @@ def update_user_me(
     current_user: User = Depends(get_current_active_user),
 ) -> Any:
     """
-    Update current user.
+    Update current authenticated user's profile information.
+    
+    Parameters:
+    - **user_in**: User update data which may include email, username, password, full_name
+    
+    Returns:
+    - Updated user object
+    
+    Raises:
+    - 400: Email or username already exists
     """
     # Check if updating to an existing email/username
     if user_in.email and user_in.email != current_user.email:
@@ -131,16 +180,32 @@ def update_user_me(
     return current_user
 
 
-@router.get("/{user_id}", response_model=UserSchema)
+@router.get(
+    "/{user_id}", 
+    response_model=UserSchema,
+    summary="Get user by ID",
+    description="Get a specific user by ID. Regular users can only access their own profile, while admin users can access any user profile."
+)
 def read_user_by_id(
     user_id: int,
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ) -> Any:
     """
-    Get a specific user by id.
-    Regular users can only get themselves.
-    Admin users can get any user.
+    Get a specific user by ID.
+    
+    Parameters:
+    - **user_id**: ID of the user to retrieve
+    
+    Returns:
+    - User object
+    
+    Raises:
+    - 403: Not enough permissions (if regular user tries to access another user's profile)
+    - 404: User not found
+    
+    Regular users can only access their own profile.
+    Admin users can access any user profile.
     """
     # Check permissions first - non-admin users can only access their own
     # profile
@@ -161,7 +226,12 @@ def read_user_by_id(
     return user
 
 
-@router.put("/{user_id}", response_model=UserSchema)
+@router.put(
+    "/{user_id}", 
+    response_model=UserSchema,
+    summary="Update user by ID",
+    description="Update a specific user by ID. Only accessible to admin users."
+)
 def update_user(
     *,
     db: Session = Depends(get_db),
@@ -170,7 +240,19 @@ def update_user(
     current_user: User = Depends(get_current_admin_user),
 ) -> Any:
     """
-    Update a user.
+    Update a specific user by ID.
+    
+    Parameters:
+    - **user_id**: ID of the user to update
+    - **user_in**: User update data which may include email, username, password, full_name, role, is_active
+    
+    Returns:
+    - Updated user object
+    
+    Raises:
+    - 400: Email or username already exists
+    - 404: User not found
+    
     Only accessible to admin users.
     """
     user = db.query(User).filter(User.id == user_id).first()
@@ -223,7 +305,12 @@ def update_user(
     return user
 
 
-@router.delete("/{user_id}", response_model=UserSchema)
+@router.delete(
+    "/{user_id}", 
+    response_model=UserSchema,
+    summary="Delete user",
+    description="Delete a specific user by ID. Only accessible to admin users. Cannot delete own account."
+)
 def delete_user(
     *,
     db: Session = Depends(get_db),
@@ -231,7 +318,18 @@ def delete_user(
     current_user: User = Depends(get_current_admin_user),
 ) -> Any:
     """
-    Delete a user.
+    Delete a specific user by ID.
+    
+    Parameters:
+    - **user_id**: ID of the user to delete
+    
+    Returns:
+    - Deleted user object
+    
+    Raises:
+    - 400: Cannot delete own user account
+    - 404: User not found
+    
     Only accessible to admin users.
     """
     user = db.query(User).filter(User.id == user_id).first()

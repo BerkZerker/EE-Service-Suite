@@ -7,11 +7,18 @@ from sqlalchemy.pool import StaticPool
 from app.db.database import Base, get_db
 from app.core.security import get_password_hash
 from app.models.user import User, UserRole
+from app.models.customer import Customer
+from app.models.bike import Bike  # Import all models to ensure they are registered with Base
+from app.models.ticket import Ticket
+from app.models.part import Part
+from app.models.ticket_part import TicketPart
+from app.models.ticket_update import TicketUpdate
+from app.models.service import Service
 from main import app
 
 
 # Setup test database
-SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
+SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"  # Use in-memory database for tests
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
     connect_args={"check_same_thread": False},
@@ -29,7 +36,19 @@ def override_get_db():
         db.close()
 
 
-app.dependency_overrides[get_db] = override_get_db
+@pytest.fixture(scope="module", autouse=True)
+def setup_and_teardown_db_override():
+    # Setup: Override the dependency
+    original_get_db = app.dependency_overrides.get(get_db)
+    app.dependency_overrides[get_db] = override_get_db
+    
+    yield
+    
+    # Teardown: Restore original dependency if it existed
+    if original_get_db:
+        app.dependency_overrides[get_db] = original_get_db
+    else:
+        del app.dependency_overrides[get_db]
 
 
 @pytest.fixture()

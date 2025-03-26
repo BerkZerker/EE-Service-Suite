@@ -154,13 +154,13 @@ Future versions will expand to include Shopify integration and advanced features
 - [x] Implement user authentication system
 - [ ] Develop core API endpoints (priority order):
   - [x] Users CRUD (staff accounts)
-  - [ ] Customers CRUD (with automatic creation during ticket creation)
+  - [x] Customers CRUD (with automatic creation during ticket creation)
   - [ ] Tickets CRUD (with customer lookup/creation logic)
   - [ ] Bikes CRUD (as subsection of customers)
   - [ ] Parts CRUD (lowest priority)
 - [x] Implement authentication middleware
-- [ ] Set up error handling
-- [ ] Create API documentation with Swagger/ReDoc
+- [x] Set up error handling
+- [x] Create API documentation with Swagger/ReDoc
 
 ### Phase 3: Frontend Foundation (Weeks 3-4)
 - [ ] Design component library and style guide
