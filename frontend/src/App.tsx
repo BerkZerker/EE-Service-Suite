@@ -11,6 +11,9 @@ const ProtectedRoute = lazy(() => import('./components/auth/ProtectedRoute'))
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 const Login = lazy(() => import('./pages/Login'))
+const TicketList = lazy(() => import('./pages/TicketList'))
+const CreateTicket = lazy(() => import('./pages/CreateTicket'))
+const EditTicket = lazy(() => import('./pages/EditTicket'))
 
 function App() {
   return (
@@ -23,6 +26,9 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Dashboard />} />
+            <Route path="tickets" element={<TicketList />} />
+            <Route path="tickets/new" element={<CreateTicket />} />
+            <Route path="tickets/:id/edit" element={<EditTicket />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Route>

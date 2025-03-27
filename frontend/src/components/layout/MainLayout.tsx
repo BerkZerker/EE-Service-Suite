@@ -48,12 +48,22 @@ const MainLayout = () => {
             </li>
 
             <li className="mt-2">
-              <Link to="/tickets" className="flex items-center p-2 space-x-2 rounded-md hover:bg-gray-700 text-gray-300">
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-                <span>Tickets</span>
-              </Link>
+              <div className="flex flex-col">
+                <Link to="/tickets" className="flex items-center p-2 space-x-2 rounded-md hover:bg-gray-700 text-gray-300">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                  </svg>
+                  <span>Tickets</span>
+                </Link>
+                <div className="ml-7 pl-4 border-l border-gray-700 mt-1">
+                  <Link to="/tickets" className="block py-1 px-2 text-sm text-gray-400 hover:text-gray-200">
+                    All Tickets
+                  </Link>
+                  <Link to="/tickets/new" className="block py-1 px-2 text-sm text-gray-400 hover:text-gray-200">
+                    Create New
+                  </Link>
+                </div>
+              </div>
             </li>
 
             <li className="mt-2">

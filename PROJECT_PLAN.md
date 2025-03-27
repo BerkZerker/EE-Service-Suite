@@ -169,16 +169,16 @@ Future versions will expand to include Shopify integration and advanced features
 - [x] Build navigation and routing
 - [x] Implement dashboard view
 - [x] Develop API service layer for frontend
-- [ ] Create form components for ticket creation/editing
+- [x] Create form components for ticket creation/editing
 
 ### Phase 4: Ticket Management Features (Weeks 5-6)
-- [ ] Implement ticket creation flow
+- [x] Implement ticket creation flow
 - [ ] Build ticket detail view
-- [ ] Create ticket list with filtering capabilities
+- [x] Create ticket list with filtering capabilities
 - [ ] Implement status updates and history tracking
 - [ ] Develop archiving and restoration functionality
-- [ ] Add customer lookup during ticket creation
-- [ ] Implement parts and services selection
+- [x] Add customer lookup during ticket creation
+- [x] Implement parts and services selection
 
 ### Phase 5: Search & Filtering System (Week 7)
 - [ ] Develop advanced search functionality

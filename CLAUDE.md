@@ -9,6 +9,8 @@
 - **Linting**: `flake8` (backend), `npm run lint` (frontend)
 - **Type Check**: `mypy .` (backend), `npm run typecheck` (frontend)
 - **Database Migration**: `alembic upgrade head` (backend)
+- **Docker**: `docker-compose up -d` (Start all services)
+- **Docker Rebuild**: `docker-compose down && docker-compose up -d --build` (Rebuild and restart)
 
 ## Code Style Guidelines
 - **Frontend**: React 18 with functional components and hooks
@@ -23,6 +25,16 @@
 - **Component Structure**: Layout, Page, and Reusable UI components
 - **State Management**: React Context API + hooks
 
+## Frontend Component Guidelines
+- All components should be functional components with TypeScript typing
+- Use interface for component props
+- UI components should be in src/components/ui
+- Feature-specific components should be in their own directories (e.g., tickets)
+- Prefer explicit imports over barrel exports for better performance
+- Forms should implement proper validation and error handling
+- Use Tailwind for styling with consistent patterns
+- Always handle loading, success, and error states
+
 ## Project Progress
 - **Phase 1**: ✅ Project Setup & Foundation
 - **Phase 2**: ✅ Database & Backend Core
@@ -34,14 +46,20 @@
     - CRUD API endpoints
     - Error handling
     - API documentation
-- **Phase 3**: 🔄 Frontend Foundation
+- **Phase 3**: ✅ Frontend Foundation
   - Completed:
     - Authentication infrastructure
     - API service layer
-    - UI component library (basic components)
+    - UI component library (basic and form components)
     - Layout and navigation structure
+    - Form components for ticket creation/editing
+- **Phase 4**: 🔄 Ticket Management Features
+  - Completed:
+    - Ticket creation flow
+    - Ticket listing with filters
+    - Customer lookup and selection
+    - Parts selection with pricing
   - Next steps:
-    - Complete form components
-    - Build customer management screens
-    - Create ticket management screens
-- **Phase 4**: 📅 Ticket Management Features
+    - Complete ticket detail view
+    - Implement status history tracking
+    - Build archiving functionality

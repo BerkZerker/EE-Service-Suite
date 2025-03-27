@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import Card from '../components/ui/Card'
 import Spinner from '../components/ui/Spinner'
+import Button from '../components/ui/Button'
 import { useAuth } from '../contexts/auth-context'
 
 type ApiStatus = 'loading' | 'success' | 'error'
@@ -95,9 +97,25 @@ const Dashboard = () => {
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-        <Card title="Recent Tickets" className="lg:col-span-2">
-          <div className="py-8 flex flex-col items-center justify-center text-gray-400">
-            <p>Ticket listing will appear here</p>
+        <Card 
+          title="Ticket Management" 
+          className="lg:col-span-2"
+          headerAction={
+            <Link to="/tickets/new">
+              <Button size="sm">Create New Ticket</Button>
+            </Link>
+          }
+        >
+          <div className="py-6 flex flex-col items-center justify-center gap-4">
+            <p className="text-gray-300">Manage customer service tickets in the EE Service Suite</p>
+            <div className="flex gap-4">
+              <Link to="/tickets">
+                <Button variant="primary">View All Tickets</Button>
+              </Link>
+              <Link to="/tickets/new">
+                <Button variant="secondary">Create New Ticket</Button>
+              </Link>
+            </div>
           </div>
         </Card>
       </div>

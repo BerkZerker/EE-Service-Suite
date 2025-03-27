@@ -20,10 +20,22 @@ frontend/
 ├── src/                  # Source code
 │   ├── components/       # Reusable UI components
 │   │   ├── layout/       # Layout components
-│   │   └── ui/           # UI elements
+│   │   ├── ui/           # UI elements (Button, Input, etc.)
+│   │   ├── auth/         # Authentication components
+│   │   └── tickets/      # Ticket-specific components
 │   ├── contexts/         # React context providers
 │   ├── pages/            # Page components
+│   │   ├── Dashboard.tsx     # Dashboard page
+│   │   ├── Login.tsx         # Login page
+│   │   ├── TicketList.tsx    # Ticket list page
+│   │   ├── CreateTicket.tsx  # Ticket creation page
+│   │   └── EditTicket.tsx    # Ticket editing page
 │   ├── services/         # API services
+│   │   ├── api-client.ts     # Base API client with interceptors
+│   │   ├── auth-service.ts   # Authentication service
+│   │   ├── ticket-service.ts # Ticket management service
+│   │   └── part-service.ts   # Parts management service
+│   ├── utils/            # Utility functions
 │   ├── config/           # Configuration files
 │   ├── App.tsx           # Main application component
 │   └── main.tsx          # Application entry point
@@ -63,9 +75,17 @@ frontend/
 The frontend includes the following major component categories:
 
 - **Layout Components**: Main layout, sidebar, header
-- **UI Components**: Buttons, inputs, cards, modals
-- **Page Components**: Dashboard, customers, tickets, etc.
-- **Form Components**: Various form controls with validation
+- **UI Components**: 
+  - Buttons, Inputs, Cards, Spinners
+  - Select, TextArea, DatePicker, FormGroup, RadioGroup
+- **Page Components**: 
+  - Dashboard, Login, NotFound
+  - Tickets (List, Create, Edit)
+- **Form Components**:
+  - TicketForm: Complete ticket creation/editing form
+  - CustomerSelector: Search and select customers
+  - BikeSelector: Choose customer bikes
+  - PartsSelector: Add parts with quantities and pricing
 
 ## Authentication
 
