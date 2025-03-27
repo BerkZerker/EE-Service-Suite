@@ -29,6 +29,7 @@ class TicketUpdate(BaseModel):
     estimated_completion: Optional[datetime] = None
     technician_id: Optional[int] = None
     labor_cost: Optional[float] = None
+    note: Optional[str] = None
 
 
 class TicketInDBBase(TicketBase):

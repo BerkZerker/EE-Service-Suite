@@ -155,7 +155,7 @@ Future versions will expand to include Shopify integration and advanced features
 - [ ] Develop core API endpoints (priority order):
   - [x] Users CRUD (staff accounts)
   - [x] Customers CRUD (with automatic creation during ticket creation)
-  - [ ] Tickets CRUD (with customer lookup/creation logic)
+  - [x] Tickets CRUD (with customer lookup/creation logic)
   - [ ] Bikes CRUD (as subsection of customers)
   - [ ] Parts CRUD (lowest priority)
 - [x] Implement authentication middleware
