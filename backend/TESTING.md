@@ -1,205 +1,96 @@
-# Testing Backend API
+# Testing Guide
 
-This document outlines the testing procedure for the API endpoints. We now have three fully implemented and tested API modules.
+This document outlines the testing strategies and procedures for the EE Service Suite backend.
 
-## Implementation Status
+## Testing Stack
 
-✅ **Users CRUD API**: Fully implemented with:
-- Complete CRUD operations (Create, Read, Update, Delete)
-- Role-based access control (Admin vs. Technician)
-- JWT token authentication
-- Comprehensive test coverage (12 test cases, all passing)
-- Proper permission checks and error handling
+- **Test Framework**: pytest
+- **HTTP Client**: httpx for async API testing
+- **Database**: In-memory SQLite for unit tests
+- **Fixtures**: pytest fixtures for reusable test components
 
-✅ **Customers CRUD API**: Fully implemented with:
-- Complete CRUD operations (Create, Read, Update, Delete)
-- Search functionality with case-insensitive matching
-- Filtering by name, email, or phone
-- Relationship with bikes (get customer with associated bikes)
-- Comprehensive test coverage (9 test cases, all passing)
-- Role-based permission control (admin-only for deletions)
+## Test Types
 
-✅ **Bikes CRUD API**: Fully implemented with:
-- Complete CRUD operations (Create, Read, Update, Delete)
-- Filtering by owner_id and name
-- Relationship with tickets (get bike with associated tickets)
-- Comprehensive test coverage (8 test cases, all passing)
-- Owner verification when creating/updating bikes
-- Role-based permission control (admin-only for deletions)
+### Unit Tests
 
-## Setup Environment
+Unit tests focus on testing individual functions and methods in isolation:
 
-1. Create a Python virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+- Core utility functions
+- Authentication logic
+- Data validation
 
-2. Install requirements:
-   ```bash
-   pip install -r requirements.txt
-   
-   # Ensure bcrypt is installed (needed for password hashing)
-   pip install bcrypt
-   ```
+### Integration Tests
 
-3. Make sure `.env` file is created with:
-   ```
-   DATABASE_URL=sqlite:///./ee_service.db
-   SECRET_KEY=your_secret_key_here
-   ALGORITHM=HS256
-   ACCESS_TOKEN_EXPIRE_MINUTES=30
-   ```
+Integration tests verify that components work together correctly:
 
-## Initialize Database
+- API endpoints
+- Database interactions
+- Authentication flows
 
-### Production Database
+### End-to-End Tests
 
-The application uses a SQLite database with the following characteristics:
-- **File location**: `/app/app.db` in the Docker container, or `./backend/app.db` locally
-- **Configuration**: Set via the `DATABASE_URL` environment variable in `docker-compose.yml`
-- **Persistence**: The database is fully persistent and preserved across container restarts
-- **Schema**: Contains all application tables (users, customers, bikes, tickets, parts, etc.)
-- **Migration management**: Managed by Alembic for version control
+E2E tests validate complete user flows:
 
-### Test Database
+- Creating and managing tickets
+- Customer registration and update
+- Parts inventory management
 
-For automated tests, we use:
-- Isolated in-memory SQLite databases (`:memory:`)
-- Completely separate from the production database
-- Automatically created/destroyed for each test run
-- No impact on production data
+## Running Tests
 
-### Setup Steps
+### Running All Tests
 
-1. Run Alembic migrations to create tables:
-   ```bash
-   alembic upgrade head
-   ```
-
-2. Create initial admin user:
-   ```bash
-   python create_admin.py --email=admin@example.com --username=admin --password=adminpassword --full-name="Admin User"
-   ```
-
-## Run Automated Tests
-
-Execute the test suites:
 ```bash
-# Test Users API
-pytest -xvs tests/test_users_api.py
-
-# Test Customers API
-pytest -xvs tests/test_customers_api.py
-
-# Test Bikes API
-pytest -xvs tests/test_bikes_api.py
+pytest
 ```
 
-## Manual API Testing
+### Running Specific Test Files
 
-1. Start FastAPI server:
-   ```bash
-   uvicorn main:app --reload
-   ```
+```bash
+pytest tests/test_users_api.py
+```
 
-2. Access the Swagger UI at http://localhost:8000/docs
+### Running Specific Test Functions
 
-3. Authentication flow:
-   - Use `/api/auth/login` endpoint with admin credentials to get a token
-   - Click the "Authorize" button at the top right and enter the token
+```bash
+pytest tests/test_users_api.py::test_create_user -v
+```
 
-4. Test Users API endpoints:
-   - GET `/api/users/` - List all users (admin only)
-   - POST `/api/users/` - Create a new user (admin only)
-   - GET `/api/users/me` - View your profile
-   - PUT `/api/users/me` - Update your profile
-   - GET `/api/users/{user_id}` - Get user by ID (admin or self)
-   - PUT `/api/users/{user_id}` - Update user by ID (admin only)
-   - DELETE `/api/users/{user_id}` - Delete user by ID (admin only)
+### Running Tests with Coverage
 
-5. Test Customers API endpoints:
-   - GET `/api/customers/` - List all customers (with optional filtering)
-   - POST `/api/customers/` - Create a new customer
-   - GET `/api/customers/{customer_id}` - Get customer by ID
-   - GET `/api/customers/{customer_id}/with-bikes` - Get customer with bikes
-   - PUT `/api/customers/{customer_id}` - Update customer
-   - DELETE `/api/customers/{customer_id}` - Delete customer (admin only)
-   - GET `/api/customers/search/?search_term=...` - Search customers by name/email/phone
+```bash
+pytest --cov=app tests/
+```
 
-6. Test Bikes API endpoints:
-   - GET `/api/bikes/` - List all bikes (with optional filtering by owner_id or name)
-   - POST `/api/bikes/` - Create a new bike
-   - GET `/api/bikes/{bike_id}` - Get bike by ID
-   - GET `/api/bikes/{bike_id}/with-tickets` - Get bike with tickets
-   - PUT `/api/bikes/{bike_id}` - Update bike
-   - DELETE `/api/bikes/{bike_id}` - Delete bike (admin only)
+## Test Configuration
 
-## Permission Tests
+Tests use a separate in-memory SQLite database to avoid affecting the development or production database.
 
-Test with both admin and regular user accounts to verify:
-- Regular users can only access/modify their own profiles
-- Admin users can access/modify all users
-- Authentication is required for all endpoints
-- Proper error responses for unauthorized access
-- Admin-only routes correctly enforce permissions
-- Technicians can view but not delete certain resources
+## Authentication in Tests
 
-## Data Validation Tests
+Many tests require authentication. The test suite includes fixtures for creating test users and generating authentication tokens:
 
-- Test validation checks when creating bikes for non-existent owners
-- Test email uniqueness constraint for users
-- Test username uniqueness constraint for users
-- Test password hashing
-- Test invalid input handling
-- Test error responses when resources don't exist
+```python
+def test_protected_route(client, admin_token_headers):
+    response = client.get("/api/users/", headers=admin_token_headers)
+    assert response.status_code == 200
+```
 
-## After Testing
+## Test Data
 
-All tests for the Users, Customers, and Bikes API modules are now passing.
+Test fixtures create the necessary data for tests:
 
-### Users API Notes
-A key bugfix was implemented to ensure proper permission handling:
-- When a non-admin user attempts to access another user's profile, the API now correctly returns a 403 Forbidden response instead of 404 Not Found
-- Permission checks are now performed before checking if a user exists, ensuring proper security
+- Test users (admin and regular)
+- Sample customers
+- Sample tickets
+- Sample inventory items
 
-### Customers API Notes
-The Customers API includes:
-- Search functionality with partial matching for name, email, and phone fields
-- Integration with bikes model (relationship between customers and bikes)
-- Proper error handling for non-existent resources
-- Role-based permissions (only admins can delete customers)
+## Manual Testing
 
-### Bikes API Notes
-The Bikes API includes:
-- Complete CRUD operations for bike management
-- Relationship with both customers (owners) and tickets
-- Validation to ensure bikes can only be created/updated with valid owner references
-- Filtering capabilities by owner_id and bike name
-- Admin-only deletion permission
+For manual testing, use the following credentials:
 
-## Technical Debt Notes
+- **Email:** admin@example.com
+- **Password:** adminpassword
 
-We've addressed several deprecated patterns in our codebase:
-
-1. ✅ Updated SQLAlchemy `declarative_base()` to use the proper import location
-2. ✅ Updated User schema to use Pydantic V2 style `model_config` instead of class-based Config
-3. ✅ Updated Customer schema to use Pydantic V2 style `model_config` with `from_attributes = True`
-4. ✅ Updated Bike schema to use Pydantic V2 style `model_config` with `from_attributes = True`
-5. ⏳ Other schema files still need to be updated to the new configuration style:
-   - service.py
-   - ticket.py
-   - ticket_part.py
-   - part.py
-   - ticket_update.py
-
-We've also improved the API documentation by:
-1. ✅ Adding OpenAPI documentation to all endpoints with `summary` and `description` fields
-2. ✅ Adding detailed docstrings for all API functions
-3. ✅ Documenting parameters, return values, and error cases in each endpoint
-
-These changes enhance the developer experience and make API exploration through Swagger UI more user-friendly.
-
-The remaining schema updates will be completed as part of the Tickets CRUD implementation.
-
-With the Users, Customers, and Bikes CRUD APIs complete, we can now move on to implementing the Tickets CRUD endpoints, which is the next priority according to the updated project plan.
+The API documentation is available at:
+- http://localhost:8000/docs (Swagger UI)
+- http://localhost:8000/redoc (ReDoc)

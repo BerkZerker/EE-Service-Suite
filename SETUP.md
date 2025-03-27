@@ -1,129 +1,162 @@
-# EE Service Suite - Setup Guide
+# Setup Guide
 
 ## Prerequisites
 
-- Python 3.9+ (for backend)
-- Node.js 18+ (for frontend)
-- npm or yarn (for frontend package management)
-- Docker and Docker Compose (for containerized setup)
+- [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/)
+- [Git](https://git-scm.com/downloads) (for development)
+- [Node.js](https://nodejs.org/) v16+ and npm (for local development)
+- [Python](https://www.python.org/downloads/) 3.9+ and pip (for local development)
 
-## Setup Options
+## Quick Start (Docker)
 
-### Option 1: Docker Setup (Recommended)
+The recommended way to run the application is using Docker:
 
-1. Ensure Docker and Docker Compose are installed on your system.
-
-2. Create a `.env` file in the backend directory based on the `.env.example` template:
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/your-username/ee-service-suite.git
+   cd ee-service-suite
    ```
-   cp backend/.env.example backend/.env
-   ```
 
-3. Build and start the containers:
-   ```
+2. Start the application:
+   ```bash
    docker-compose up -d
    ```
 
-4. Setup the database (first time only):
-   ```
-   # If you're using Docker Compose V2, use this command:
-   docker compose exec backend alembic upgrade head
-   
-   # For older Docker Compose versions:
-   docker-compose exec backend alembic upgrade head
-   ```
-
-5. Access the services:
+3. Access the application:
    - Frontend: http://localhost:5173
    - Backend API: http://localhost:8000
    - API Documentation: http://localhost:8000/docs
 
-To stop the services:
-```
-docker-compose down
-```
+4. Login with the test admin account:
+   - Email: admin@example.com
+   - Password: adminpassword
 
-### Option 2: Local Development Setup
+## Development Setup
 
-#### Backend Setup
+### Backend (FastAPI)
 
-1. Navigate to the backend directory:
-   ```
+1. Create a virtual environment:
+   ```bash
    cd backend
-   ```
-
-2. Create a virtual environment:
-   ```
    python -m venv venv
-   ```
-
-3. Activate the virtual environment:
-   - Windows: `venv\Scripts\activate`
-   - Mac/Linux: `source venv/bin/activate`
-
-4. Install dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
-
-5. Set up the database:
-   ```
-   # Apply the initial migration
-   alembic upgrade head
-   
-   # For future migrations, create and apply
-   # alembic revision --autogenerate -m "migration description"
-   # alembic upgrade head
-   ```
-
-6. Run the development server:
-   ```
-   uvicorn main:app --reload
-   ```
-
-The backend will be available at http://localhost:8000, and the API documentation at http://localhost:8000/docs.
-
-#### Frontend Setup
-
-1. Navigate to the frontend directory:
-   ```
-   cd frontend
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
 2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
    ```
+
+3. Run database migrations:
+   ```bash
+   alembic upgrade head
+   ```
+
+4. Create an admin user:
+   ```bash
+   python create_admin.py
+   ```
+
+5. Start the development server:
+   ```bash
+   uvicorn main:app --reload
+   ```
+
+### Frontend (React)
+
+1. Install dependencies:
+   ```bash
+   cd frontend
    npm install
-   # or
-   yarn
    ```
 
-3. Run the development server:
-   ```
+2. Start the development server:
+   ```bash
    npm run dev
-   # or
-   yarn dev
    ```
 
-The frontend will be available at http://localhost:5173.
+## Testing
 
-## Development Workflow
+### Backend Tests
 
-1. Run both the backend and frontend development servers.
-2. The frontend is configured to proxy API requests to the backend.
-3. Make changes to the code, and the servers will automatically reload.
+Run the test suite:
+```bash
+cd backend
+pytest
+```
 
-## API Development Priorities
+Run a specific test:
+```bash
+pytest tests/test_users_api.py::test_create_user -v
+```
 
-In accordance with our project plan, API endpoints will be developed in the following order:
+### Frontend Tests
 
-1. **Users CRUD** (staff accounts) - Essential for authentication and service tracking
-2. **Customers CRUD** - With logic for automatic creation during ticket creation
-3. **Tickets CRUD** - With customer lookup/creation integration
-4. **Bikes CRUD** - Implemented as a subsection of customers
-5. **Parts CRUD** - Lowest priority, to be implemented after core service functionality
+Run the test suite:
+```bash
+cd frontend
+npm test
+```
 
-This priority order creates a logical workflow where:
-- Staff users are created first (authentication foundation)
-- Customer management is implemented second
-- Ticket creation with customer integration follows
-- Bikes are managed as a hierarchical relationship under customers
-- Parts/inventory is implemented last after core functionality is in place
+## Environment Variables
+
+The application uses the following environment variables which can be set in a `.env` file:
+
+### Backend
+
+- `SECRET_KEY`: JWT secret key
+- `ALGORITHM`: JWT algorithm (default: HS256)
+- `ACCESS_TOKEN_EXPIRE_MINUTES`: JWT token expiration (default: 30)
+- `DATABASE_URL`: SQLite database URL (default: sqlite:///./app.db)
+
+### Frontend
+
+- `VITE_API_URL`: API URL (default: http://localhost:8000)
+
+## Backup Setup
+
+By default, the SQLite database file is stored in the backend directory. To set up automated backups:
+
+1. Create a Dropbox app and get an access token
+2. Add the access token to your environment variables:
+   ```
+   DROPBOX_ACCESS_TOKEN=your_access_token
+   ```
+
+3. Run the backup script (can be scheduled as a cron job):
+   ```bash
+   python backend/scripts/backup.py
+   ```
+
+## Troubleshooting
+
+### Common Issues
+
+- If the frontend can't connect to the backend, check that the API URL is correctly set
+- If database migrations fail, try removing the alembic version table and rerunning migrations
+- For permission issues with SQLite, check file permissions on the database file
+
+### Logs
+
+- Backend logs: `docker-compose logs backend`
+- Frontend logs: `docker-compose logs frontend`
+
+## Updating
+
+To update the application:
+
+1. Pull the latest changes:
+   ```bash
+   git pull
+   ```
+
+2. Rebuild the containers:
+   ```bash
+   docker-compose build
+   docker-compose up -d
+   ```
+
+3. Run any new migrations:
+   ```bash
+   docker-compose exec backend alembic upgrade head
+   ```
