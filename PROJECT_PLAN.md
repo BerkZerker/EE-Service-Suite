@@ -152,12 +152,12 @@ Future versions will expand to include Shopify integration and advanced features
 - [x] Design and implement database schema
 - [x] Create database migrations
 - [x] Implement user authentication system
-- [ ] Develop core API endpoints (priority order):
+- [x] Develop core API endpoints (priority order):
   - [x] Users CRUD (staff accounts)
   - [x] Customers CRUD (with automatic creation during ticket creation)
+  - [x] Bikes CRUD (as subsection of customers)
   - [x] Tickets CRUD (with customer lookup/creation logic)
-  - [ ] Bikes CRUD (as subsection of customers)
-  - [ ] Parts CRUD (lowest priority)
+  - [x] Parts CRUD (with inventory management capabilities)
 - [x] Implement authentication middleware
 - [x] Set up error handling
 - [x] Create API documentation with Swagger/ReDoc

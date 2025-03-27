@@ -1,6 +1,6 @@
 # Testing Backend API
 
-This document outlines the testing procedure for the API endpoints. We now have two fully implemented and tested API modules.
+This document outlines the testing procedure for the API endpoints. We now have three fully implemented and tested API modules.
 
 ## Implementation Status
 
@@ -17,6 +17,14 @@ This document outlines the testing procedure for the API endpoints. We now have 
 - Filtering by name, email, or phone
 - Relationship with bikes (get customer with associated bikes)
 - Comprehensive test coverage (9 test cases, all passing)
+- Role-based permission control (admin-only for deletions)
+
+✅ **Bikes CRUD API**: Fully implemented with:
+- Complete CRUD operations (Create, Read, Update, Delete)
+- Filtering by owner_id and name
+- Relationship with tickets (get bike with associated tickets)
+- Comprehensive test coverage (8 test cases, all passing)
+- Owner verification when creating/updating bikes
 - Role-based permission control (admin-only for deletions)
 
 ## Setup Environment
@@ -83,6 +91,9 @@ pytest -xvs tests/test_users_api.py
 
 # Test Customers API
 pytest -xvs tests/test_customers_api.py
+
+# Test Bikes API
+pytest -xvs tests/test_bikes_api.py
 ```
 
 ## Manual API Testing
@@ -116,6 +127,14 @@ pytest -xvs tests/test_customers_api.py
    - DELETE `/api/customers/{customer_id}` - Delete customer (admin only)
    - GET `/api/customers/search/?search_term=...` - Search customers by name/email/phone
 
+6. Test Bikes API endpoints:
+   - GET `/api/bikes/` - List all bikes (with optional filtering by owner_id or name)
+   - POST `/api/bikes/` - Create a new bike
+   - GET `/api/bikes/{bike_id}` - Get bike by ID
+   - GET `/api/bikes/{bike_id}/with-tickets` - Get bike with tickets
+   - PUT `/api/bikes/{bike_id}` - Update bike
+   - DELETE `/api/bikes/{bike_id}` - Delete bike (admin only)
+
 ## Permission Tests
 
 Test with both admin and regular user accounts to verify:
@@ -123,17 +142,21 @@ Test with both admin and regular user accounts to verify:
 - Admin users can access/modify all users
 - Authentication is required for all endpoints
 - Proper error responses for unauthorized access
+- Admin-only routes correctly enforce permissions
+- Technicians can view but not delete certain resources
 
 ## Data Validation Tests
 
-- Test email uniqueness constraint
-- Test username uniqueness constraint 
+- Test validation checks when creating bikes for non-existent owners
+- Test email uniqueness constraint for users
+- Test username uniqueness constraint for users
 - Test password hashing
 - Test invalid input handling
+- Test error responses when resources don't exist
 
 ## After Testing
 
-All tests for both API modules are now passing.
+All tests for the Users, Customers, and Bikes API modules are now passing.
 
 ### Users API Notes
 A key bugfix was implemented to ensure proper permission handling:
@@ -147,7 +170,13 @@ The Customers API includes:
 - Proper error handling for non-existent resources
 - Role-based permissions (only admins can delete customers)
 
-With both the Users and Customers CRUD APIs complete, we can now move on to implementing the Tickets CRUD endpoints, which is the next priority according to the project plan.
+### Bikes API Notes
+The Bikes API includes:
+- Complete CRUD operations for bike management
+- Relationship with both customers (owners) and tickets
+- Validation to ensure bikes can only be created/updated with valid owner references
+- Filtering capabilities by owner_id and bike name
+- Admin-only deletion permission
 
 ## Technical Debt Notes
 
@@ -172,3 +201,5 @@ We've also improved the API documentation by:
 These changes enhance the developer experience and make API exploration through Swagger UI more user-friendly.
 
 The remaining schema updates will be completed as part of the Tickets CRUD implementation.
+
+With the Users, Customers, and Bikes CRUD APIs complete, we can now move on to implementing the Tickets CRUD endpoints, which is the next priority according to the updated project plan.

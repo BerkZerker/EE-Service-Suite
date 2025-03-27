@@ -1,5 +1,5 @@
 from typing import Optional, List
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, computed_field
 
 
 class PartBase(BaseModel):
@@ -43,15 +43,8 @@ class PartInDBBase(PartBase):
 
 
 class Part(PartInDBBase):
-    markup: float = 0
-    
-    @classmethod
-    def model_validate(cls, part_obj, **kwargs):
-        obj = Part(**part_obj.__dict__)
-        obj.markup = part_obj.calculate_markup()
-        return obj
-        
-    # Keep backward compatibility
-    @classmethod
-    def from_orm(cls, obj):
-        return cls.model_validate(obj)
+    @computed_field
+    def markup(self) -> float:
+        if self.cost_price and self.cost_price > 0:
+            return ((self.retail_price - self.cost_price) / self.cost_price) * 100
+        return 0
