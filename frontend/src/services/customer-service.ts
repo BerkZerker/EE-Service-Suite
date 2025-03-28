@@ -80,6 +80,13 @@ export const customerService = {
   getCustomerBikes: async (customerId: string): Promise<Bike[]> => {
     return apiClient.get<Bike[]>(`/customers/${customerId}/bikes`);
   },
+  
+  /**
+   * Get bike by ID
+   */
+  getBike: async (bikeId: string): Promise<Bike> => {
+    return apiClient.get<Bike>(`/bikes/${bikeId}`);
+  },
 
   /**
    * Create a bike for a customer

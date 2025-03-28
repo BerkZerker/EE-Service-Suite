@@ -12,7 +12,8 @@ import {
 import CustomerSelector from './CustomerSelector';
 import BikeSelector from './BikeSelector';
 import PartsSelector, { SelectedPart } from './PartsSelector';
-import { Customer, Bike, ticketService } from '../../services';
+// Service imports
+import { type Customer, type Bike } from '../../services/customer-service';
 import {
   TicketStatus,
   TicketPriority,

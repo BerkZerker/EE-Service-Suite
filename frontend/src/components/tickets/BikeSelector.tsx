@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Customer, Bike, customerService } from '../../services';
+import { customerService } from '../../services';
+import { type Bike } from '../../services/customer-service';
 import { Select, Button } from '../ui';
 import { SelectOption } from '../ui/Select';
 

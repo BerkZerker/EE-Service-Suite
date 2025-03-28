@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Customer, customerService } from '../../services';
+import { customerService } from '../../services';
+import { type Customer } from '../../services/customer-service';
 import { Input, Button } from '../ui';
 import debounce from 'lodash.debounce';
 

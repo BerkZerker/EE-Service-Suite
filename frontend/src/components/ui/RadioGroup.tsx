@@ -31,7 +31,8 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
     onChange(e.target.value);
   };
 
-  const groupId = `radio-group-${name}`;
+  // Generated ID for the group
+  // This ID could be used for ARIA attributes if needed
 
   return (
     <div className={className}>

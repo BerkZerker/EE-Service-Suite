@@ -175,6 +175,24 @@ Database tables may not be created. Run migrations:
 docker-compose exec backend alembic upgrade head
 ```
 
+### "LookupError: 'value' is not among the defined enum values"
+
+This error occurs when there's a mismatch between enum values in the database and the expected values in the code. To fix it:
+```bash
+docker-compose exec backend python fix_enums.py
+```
+
+### "No data showing in frontend/No tickets or customers appear"
+
+If the dashboard shows tickets and customers exist but they don't appear in listings:
+1. Check backend logs for enum-related errors
+2. Run the fix_enums.py script to correct database values
+3. Restart services:
+```bash
+docker-compose restart
+```
+4. Clear browser cache and reload the page
+
 ## Getting Additional Help
 
 If you encounter issues not covered in this guide:
