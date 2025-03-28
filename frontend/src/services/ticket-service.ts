@@ -53,7 +53,8 @@ export interface Ticket {
   total_parts_cost: number;
   created_at: string;
   updated_at: string;
-  total: number;
+  is_archived: boolean;
+  total?: number; // Optional field calculated on frontend
 }
 
 export interface TicketWithDetails extends Ticket {
@@ -89,20 +90,33 @@ export interface AddPartRequest {
   price: number;
 }
 
+export interface ArchiveRequest {
+  note?: string;
+}
+
 // Ticket service functions
 export const ticketService = {
   /**
    * Get all tickets
    */
   getTickets: async (skip = 0, limit = 100): Promise<Ticket[]> => {
-    return apiClient.get<Ticket[]>(`/tickets/?skip=${skip}&limit=${limit}`);
+    const tickets = await apiClient.get<Ticket[]>(`/tickets/?skip=${skip}&limit=${limit}`);
+    // Calculate total for each ticket
+    return tickets.map(ticket => ({
+      ...ticket,
+      total: ticket.labor_cost + ticket.total_parts_cost
+    }));
   },
 
   /**
    * Get ticket by ID
    */
   getTicket: async (id: string): Promise<TicketWithDetails> => {
-    return apiClient.get<TicketWithDetails>(`/tickets/${id}`);
+    const ticket = await apiClient.get<TicketWithDetails>(`/tickets/${id}`);
+    return {
+      ...ticket,
+      total: ticket.labor_cost + ticket.total_parts_cost
+    };
   },
 
   /**
@@ -159,6 +173,32 @@ export const ticketService = {
    */
   getStatusUpdates: async (ticketId: string): Promise<TicketUpdate[]> => {
     return apiClient.get<TicketUpdate[]>(`/tickets/${ticketId}/updates`);
+  },
+
+  /**
+   * Archive a ticket
+   */
+  archiveTicket: async (ticketId: string, data: ArchiveRequest = {}): Promise<Ticket> => {
+    return apiClient.patch<Ticket>(`/tickets/${ticketId}/archive`, data);
+  },
+
+  /**
+   * Unarchive (restore) a ticket
+   */
+  unarchiveTicket: async (ticketId: string, data: ArchiveRequest = {}): Promise<Ticket> => {
+    return apiClient.patch<Ticket>(`/tickets/${ticketId}/unarchive`, data);
+  },
+
+  /**
+   * Get all tickets including archives
+   */
+  getArchivedTickets: async (skip = 0, limit = 100): Promise<Ticket[]> => {
+    const tickets = await apiClient.get<Ticket[]>(`/tickets/?skip=${skip}&limit=${limit}&archived=true`);
+    // Calculate total for each ticket
+    return tickets.map(ticket => ({
+      ...ticket,
+      total: ticket.labor_cost + ticket.total_parts_cost
+    }));
   }
 };
 

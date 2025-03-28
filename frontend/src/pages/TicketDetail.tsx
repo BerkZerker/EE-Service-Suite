@@ -9,7 +9,7 @@ import {
   CustomerBikeInfo,
   PartsManagement
 } from '../components/tickets';
-import { formatDate, formatCurrency, ticketStatusColors, ticketPriorityColors } from '../utils/ticketUtils';
+import { formatDate, formatCurrency, ticketStatusColors, ticketPriorityColors, archivedTicketStyles } from '../utils/ticketUtils';
 import { Customer } from '../services/customer-service';
 
 const TicketDetail: React.FC = () => {
@@ -20,6 +20,7 @@ const TicketDetail: React.FC = () => {
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isArchiving, setIsArchiving] = useState(false);
   
   const fetchTicket = useCallback(async () => {
     if (!id) return;
@@ -53,6 +54,29 @@ const TicketDetail: React.FC = () => {
   const handleTicketUpdated = useCallback(() => {
     fetchTicket();
   }, [fetchTicket]);
+  
+  // Handle archiving/unarchiving
+  const handleArchiveToggle = useCallback(async () => {
+    if (!ticket || !id) return;
+    
+    setIsArchiving(true);
+    setError('');
+    
+    try {
+      if (ticket.is_archived) {
+        await ticketService.unarchiveTicket(id);
+      } else {
+        await ticketService.archiveTicket(id);
+      }
+      // Refresh ticket data
+      fetchTicket();
+    } catch (err) {
+      console.error('Error toggling archive status:', err);
+      setError('Failed to update ticket archive status');
+    } finally {
+      setIsArchiving(false);
+    }
+  }, [ticket, id, fetchTicket]);
   
   useEffect(() => {
     fetchTicket();
@@ -103,6 +127,11 @@ const TicketDetail: React.FC = () => {
             <span className={`px-2 py-1 rounded-full text-xs font-medium ${ticketPriorityColors[ticket.priority]}`}>
               {ticket.priority.charAt(0).toUpperCase() + ticket.priority.slice(1)}
             </span>
+            {ticket.is_archived && (
+              <span className={`px-2 py-1 rounded-full text-xs font-medium ${archivedTicketStyles.badge}`}>
+                Archived
+              </span>
+            )}
           </div>
           <p className="text-gray-400 mt-1">Created: {formatDate(ticket.created_at)}</p>
           {error && <p className="mt-2 text-red-500">{error}</p>}
@@ -206,16 +235,33 @@ const TicketDetail: React.FC = () => {
           <Card>
             <h2 className="text-xl font-semibold text-white mb-4">Actions</h2>
             <div className="space-y-3">
-              <Button variant="outline" className="w-full justify-start" onClick={() => navigate(`/tickets/${ticket.id}/edit`)}>
-                <span className="mr-2">✏️</span> Edit Ticket
-              </Button>
-              <Button variant="outline" className="w-full justify-start">
-                <span className="mr-2">📁</span> Archive Ticket
+              {!ticket.is_archived && (
+                <Button variant="outline" className="w-full justify-start" onClick={() => navigate(`/tickets/${ticket.id}/edit`)}>
+                  <span className="mr-2">✏️</span> Edit Ticket
+                </Button>
+              )}
+              <Button 
+                variant="outline" 
+                className="w-full justify-start"
+                onClick={handleArchiveToggle}
+                disabled={isArchiving}
+              >
+                {isArchiving ? (
+                  <>
+                    <Spinner size="sm" className="mr-2" />
+                    {ticket.is_archived ? 'Restoring...' : 'Archiving...'}
+                  </>
+                ) : (
+                  <>
+                    <span className="mr-2">{ticket.is_archived ? '🔄' : '📁'}</span>
+                    {ticket.is_archived ? 'Restore Ticket' : 'Archive Ticket'}
+                  </>
+                )}
               </Button>
               <Button variant="outline" className="w-full justify-start">
                 <span className="mr-2">🖨️</span> Print Ticket
               </Button>
-              {ticket.status === TicketStatus.COMPLETE && (
+              {!ticket.is_archived && ticket.status === TicketStatus.COMPLETE && (
                 <Button variant="outline" className="w-full justify-start">
                   <span className="mr-2">✓</span> Mark as Delivered
                 </Button>

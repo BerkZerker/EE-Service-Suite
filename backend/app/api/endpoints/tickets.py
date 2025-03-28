@@ -14,7 +14,8 @@ from app.schemas.ticket import (
     Ticket as TicketSchema,
     TicketCreate,
     TicketUpdate as TicketUpdateSchema,
-    TicketWithDetails
+    TicketWithDetails,
+    TicketArchiveRequest
 )
 from app.schemas.ticket_update import (
     TicketUpdateCreate, 
@@ -44,6 +45,7 @@ def read_tickets(
     customer_id: Optional[int] = None,
     bike_id: Optional[int] = None,
     technician_id: Optional[int] = None,
+    archived: Optional[bool] = False,
     current_user: User = Depends(get_current_active_user),
 ) -> Any:
     """
@@ -57,6 +59,7 @@ def read_tickets(
     - **customer_id**: Optional filter by customer ID
     - **bike_id**: Optional filter by bike ID
     - **technician_id**: Optional filter by assigned technician ID
+    - **archived**: Filter for archived tickets (True) or active tickets (False, default)
     
     Returns:
     - List of ticket objects
@@ -74,6 +77,9 @@ def read_tickets(
         query = query.filter(Ticket.bike_id == bike_id)
     if technician_id:
         query = query.filter(Ticket.technician_id == technician_id)
+    
+    # Filter by archive status
+    query = query.filter(Ticket.is_archived == archived)
 
     tickets = query.offset(skip).limit(limit).all()
     return tickets
@@ -264,6 +270,126 @@ def delete_ticket(
     db.delete(ticket)
     db.commit()
     return None
+
+
+@router.patch(
+    "/{ticket_id}/archive",
+    response_model=TicketSchema,
+    summary="Archive ticket",
+    description="Archive a specific ticket by ID."
+)
+def archive_ticket(
+    *,
+    db: Session = Depends(get_db),
+    ticket_id: int,
+    archive_data: TicketArchiveRequest,
+    current_user: User = Depends(get_current_active_user),
+) -> Any:
+    """
+    Archive a specific ticket by ID.
+    
+    Parameters:
+    - **ticket_id**: ID of the ticket to archive
+    - **archive_data**: Optional note to add with the archive action
+    
+    Returns:
+    - Updated ticket object
+    
+    Raises:
+    - 404: Ticket not found
+    - 400: Ticket is already archived
+    """
+    ticket = db.query(Ticket).filter(Ticket.id == ticket_id).first()
+    if not ticket:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Ticket not found",
+        )
+    
+    if ticket.is_archived:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Ticket is already archived",
+        )
+    
+    # Update ticket
+    ticket.is_archived = True
+    db.add(ticket)
+    
+    # Add ticket update record
+    note = archive_data.note if archive_data.note else "Ticket archived"
+    ticket_update = TicketUpdate(
+        ticket_id=ticket.id,
+        new_status=ticket.status,
+        note=note,
+        user_id=current_user.id
+    )
+    db.add(ticket_update)
+    
+    db.commit()
+    db.refresh(ticket)
+    
+    return ticket
+
+
+@router.patch(
+    "/{ticket_id}/unarchive",
+    response_model=TicketSchema,
+    summary="Unarchive ticket",
+    description="Restore a previously archived ticket."
+)
+def unarchive_ticket(
+    *,
+    db: Session = Depends(get_db),
+    ticket_id: int,
+    archive_data: TicketArchiveRequest,
+    current_user: User = Depends(get_current_active_user),
+) -> Any:
+    """
+    Restore a previously archived ticket.
+    
+    Parameters:
+    - **ticket_id**: ID of the ticket to unarchive
+    - **archive_data**: Optional note to add with the unarchive action
+    
+    Returns:
+    - Updated ticket object
+    
+    Raises:
+    - 404: Ticket not found
+    - 400: Ticket is not archived
+    """
+    ticket = db.query(Ticket).filter(Ticket.id == ticket_id).first()
+    if not ticket:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Ticket not found",
+        )
+    
+    if not ticket.is_archived:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Ticket is not archived",
+        )
+    
+    # Update ticket
+    ticket.is_archived = False
+    db.add(ticket)
+    
+    # Add ticket update record
+    note = archive_data.note if archive_data.note else "Ticket restored from archive"
+    ticket_update = TicketUpdate(
+        ticket_id=ticket.id,
+        new_status=ticket.status,
+        note=note,
+        user_id=current_user.id
+    )
+    db.add(ticket_update)
+    
+    db.commit()
+    db.refresh(ticket)
+    
+    return ticket
 
 
 # Ticket Updates Endpoints

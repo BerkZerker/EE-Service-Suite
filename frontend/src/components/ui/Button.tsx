@@ -1,6 +1,6 @@
 import React, { ButtonHTMLAttributes } from 'react';
 
-type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'outline' | 'ghost';
+type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'outline' | 'ghost' | 'subtle';
 type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -28,6 +28,8 @@ const getVariantClasses = (variant: ButtonVariant): string => {
       return 'bg-transparent border border-gray-600 hover:bg-gray-700 text-gray-300';
     case 'ghost':
       return 'bg-transparent hover:bg-gray-700 text-gray-300';
+    case 'subtle':
+      return 'bg-gray-800 hover:bg-gray-700 text-gray-300';
     default:
       return 'bg-primary-600 hover:bg-primary-700 text-white';
   }

@@ -47,3 +47,12 @@ export const ticketPriorityColors: Record<string, string> = {
   high: 'bg-orange-500 text-white',
   urgent: 'bg-red-600 text-white',
 };
+
+/**
+ * Style classes for archived tickets
+ */
+export const archivedTicketStyles = {
+  card: 'border-gray-600 opacity-75',
+  badge: 'bg-gray-700 text-gray-300',
+  icon: 'text-gray-400'
+};

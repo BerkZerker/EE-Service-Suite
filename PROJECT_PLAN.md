@@ -176,7 +176,7 @@ Future versions will expand to include Shopify integration and advanced features
 - [x] Build ticket detail view
 - [x] Create ticket list with filtering capabilities
 - [x] Implement status updates and history tracking
-- [ ] Develop archiving and restoration functionality
+- [x] Develop archiving and restoration functionality
 - [x] Add customer lookup during ticket creation
 - [x] Implement parts and services selection
 - [x] Create parts management for tickets

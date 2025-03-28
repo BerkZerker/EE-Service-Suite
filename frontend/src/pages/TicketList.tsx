@@ -3,16 +3,18 @@ import { Link } from 'react-router-dom';
 import { ticketService } from '../services';
 import { TicketStatus, TicketPriority, type Ticket } from '../services/ticket-service';
 import { Card, Button, Spinner, Select } from '../components/ui';
-import { formatDate, formatCurrency, ticketStatusColors, ticketPriorityColors } from '../utils/ticketUtils';
+import { formatDate, formatCurrency, ticketStatusColors, ticketPriorityColors, archivedTicketStyles } from '../utils/ticketUtils';
 
 const TicketList: React.FC = () => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isArchiving, setIsArchiving] = useState<string | null>(null);
   
   // Filtering state
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [priorityFilter, setPriorityFilter] = useState<string>('all');
+  const [showArchived, setShowArchived] = useState<boolean>(false);
   
   const statusOptions = [
     { value: 'all', label: 'All Statuses' },
@@ -38,8 +40,13 @@ const TicketList: React.FC = () => {
       setError('');
       
       try {
-        const ticketList = await ticketService.getTickets();
-        setTickets(ticketList);
+        if (showArchived) {
+          const ticketList = await ticketService.getArchivedTickets();
+          setTickets(ticketList);
+        } else {
+          const ticketList = await ticketService.getTickets();
+          setTickets(ticketList);
+        }
       } catch (err) {
         console.error('Error fetching tickets:', err);
         setError('Failed to load tickets');
@@ -49,7 +56,7 @@ const TicketList: React.FC = () => {
     };
     
     fetchTickets();
-  }, []);
+  }, [showArchived]);
   
   const filteredTickets = tickets.filter(ticket => {
     let statusMatch = true;
@@ -94,20 +101,38 @@ const TicketList: React.FC = () => {
       
       <Card className="mb-6">
         <div className="flex flex-col md:flex-row gap-4">
-          <Select
-            className="flex-1"
-            label="Filter by Status"
-            options={statusOptions}
-            value={statusFilter}
-            onChange={setStatusFilter}
-          />
-          <Select
-            className="flex-1"
-            label="Filter by Priority"
-            options={priorityOptions}
-            value={priorityFilter}
-            onChange={setPriorityFilter}
-          />
+          <div className="flex-1">
+            <Select
+              className="w-full"
+              label="Filter by Status"
+              options={statusOptions}
+              value={statusFilter}
+              onChange={setStatusFilter}
+            />
+          </div>
+          <div className="flex-1">
+            <Select
+              className="w-full"
+              label="Filter by Priority"
+              options={priorityOptions}
+              value={priorityFilter}
+              onChange={setPriorityFilter}
+            />
+          </div>
+          <div className="flex items-end md:items-center">
+            <div className="flex items-center">
+              <input
+                id="archive-toggle"
+                type="checkbox"
+                checked={showArchived}
+                onChange={() => setShowArchived(!showArchived)}
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-700 rounded bg-gray-800"
+              />
+              <label htmlFor="archive-toggle" className="ml-2 text-sm text-gray-300">
+                {showArchived ? 'Showing Archived' : 'Show Archived'} 
+              </label>
+            </div>
+          </div>
         </div>
       </Card>
       
@@ -133,57 +158,107 @@ const TicketList: React.FC = () => {
             )}
           </div>
         ) : (
-          filteredTickets.map(ticket => (
-            <Card key={ticket.id} className="transition-transform hover:scale-[1.01]">
-              <div className="flex flex-col md:flex-row justify-between gap-4">
-                <div>
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-lg font-medium text-white">
-                      Ticket #{ticket.ticket_number}
-                    </h3>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${ticketStatusColors[ticket.status]}`}>
-                      {ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
-                    </span>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${ticketPriorityColors[ticket.priority]}`}>
-                      {ticket.priority.charAt(0).toUpperCase() + ticket.priority.slice(1)}
-                    </span>
-                  </div>
-                  <p className="text-gray-300 mb-2 line-clamp-2">{ticket.problem_description}</p>
-                  <div className="text-sm text-gray-400">
-                    Created: {formatDate(ticket.created_at)}
-                    {ticket.estimated_completion && (
-                      <span className="ml-4">
-                        Est. Completion: {formatDate(ticket.estimated_completion)}
+          filteredTickets.map(ticket => {
+            const handleArchiveToggle = async () => {
+              setIsArchiving(ticket.id);
+              try {
+                if (ticket.is_archived) {
+                  // Unarchive
+                  await ticketService.unarchiveTicket(ticket.id);
+                } else {
+                  // Archive
+                  await ticketService.archiveTicket(ticket.id);
+                }
+                // Reload tickets
+                const newTickets = showArchived 
+                  ? await ticketService.getArchivedTickets()
+                  : await ticketService.getTickets();
+                setTickets(newTickets);
+              } catch (err) {
+                console.error('Error toggling archive state:', err);
+                setError('Failed to update ticket archive status');
+              } finally {
+                setIsArchiving(null);
+              }
+            };
+            
+            return (
+              <Card 
+                key={ticket.id} 
+                className={`transition-transform hover:scale-[1.01] ${ticket.is_archived ? archivedTicketStyles.card : ''}`}
+              >
+                <div className="flex flex-col md:flex-row justify-between gap-4">
+                  <div>
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="text-lg font-medium text-white">
+                        Ticket #{ticket.ticket_number}
+                      </h3>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${ticketStatusColors[ticket.status]}`}>
+                        {ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
                       </span>
-                    )}
-                  </div>
-                </div>
-                <div className="flex flex-col items-end justify-between">
-                  <div className="text-right">
-                    <div className="text-lg font-medium text-white">
-                      {formatCurrency(ticket.total)}
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${ticketPriorityColors[ticket.priority]}`}>
+                        {ticket.priority.charAt(0).toUpperCase() + ticket.priority.slice(1)}
+                      </span>
+                      {ticket.is_archived && (
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${archivedTicketStyles.badge}`}>
+                          Archived
+                        </span>
+                      )}
                     </div>
+                    <p className="text-gray-300 mb-2 line-clamp-2">{ticket.problem_description}</p>
                     <div className="text-sm text-gray-400">
-                      Parts: {formatCurrency(ticket.total_parts_cost)} | 
-                      Labor: {formatCurrency(ticket.labor_cost)}
+                      Created: {formatDate(ticket.created_at)}
+                      {ticket.estimated_completion && (
+                        <span className="ml-4">
+                          Est. Completion: {formatDate(ticket.estimated_completion)}
+                        </span>
+                      )}
                     </div>
                   </div>
-                  <div className="flex space-x-2 mt-3 md:mt-0">
-                    <Link to={`/tickets/${ticket.id}`}>
-                      <Button size="sm" variant="outline">
-                        View
+                  <div className="flex flex-col items-end justify-between">
+                    <div className="text-right">
+                      <div className="text-lg font-medium text-white">
+                        {formatCurrency(ticket.total)}
+                      </div>
+                      <div className="text-sm text-gray-400">
+                        Parts: {formatCurrency(ticket.total_parts_cost)} | 
+                        Labor: {formatCurrency(ticket.labor_cost)}
+                      </div>
+                    </div>
+                    <div className="flex space-x-2 mt-3 md:mt-0">
+                      <Link to={`/tickets/${ticket.id}`}>
+                        <Button size="sm" variant="outline">
+                          View
+                        </Button>
+                      </Link>
+                      {!ticket.is_archived && (
+                        <Link to={`/tickets/${ticket.id}/edit`}>
+                          <Button size="sm">
+                            Edit
+                          </Button>
+                        </Link>
+                      )}
+                      <Button 
+                        size="sm" 
+                        variant={ticket.is_archived ? "outline" : "subtle"}
+                        onClick={handleArchiveToggle}
+                        disabled={isArchiving === ticket.id}
+                      >
+                        {isArchiving === ticket.id ? (
+                          <span className="flex items-center">
+                            <Spinner size="sm" className="mr-1" />
+                            Processing...
+                          </span>
+                        ) : (
+                          ticket.is_archived ? 'Restore' : 'Archive'
+                        )}
                       </Button>
-                    </Link>
-                    <Link to={`/tickets/${ticket.id}/edit`}>
-                      <Button size="sm">
-                        Edit
-                      </Button>
-                    </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Card>
-          ))
+              </Card>
+            );
+          })
         )}
       </div>
     </div>

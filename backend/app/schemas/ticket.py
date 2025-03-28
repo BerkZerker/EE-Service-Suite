@@ -15,6 +15,7 @@ class TicketBase(BaseModel):
     bike_id: int
     technician_id: Optional[int] = None
     labor_cost: float = 0.0
+    is_archived: bool = False
 
 
 class TicketCreate(TicketBase):
@@ -29,6 +30,12 @@ class TicketUpdate(BaseModel):
     estimated_completion: Optional[datetime] = None
     technician_id: Optional[int] = None
     labor_cost: Optional[float] = None
+    note: Optional[str] = None
+    is_archived: Optional[bool] = None
+
+
+class TicketArchiveRequest(BaseModel):
+    """Schema for archive/unarchive requests"""
     note: Optional[str] = None
 
 
