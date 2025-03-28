@@ -8,7 +8,9 @@ const CreateTicket: React.FC = () => {
   const navigate = useNavigate();
   const [error, setError] = useState('');
   
-  const handleSubmit = async (ticketData: TicketCreateRequest) => {
+  // Cast to handle the form prop type requirement
+  const handleSubmit = async (ticketData: TicketCreateRequest | any) => {
+    // We know this is always a TicketCreateRequest when creating
     try {
       const newTicket = await ticketService.createTicket(ticketData);
       // Redirect to ticket detail page

@@ -38,7 +38,7 @@ The recommended way to run the application is using Docker:
 1. Create a virtual environment:
    ```bash
    cd backend
-   python -m venv venv
+   python3 -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
@@ -52,9 +52,18 @@ The recommended way to run the application is using Docker:
    alembic upgrade head
    ```
 
-4. Create an admin user:
+4. Create an admin user and test data:
    ```bash
-   python create_admin.py
+   python3 setup_test_data.py
+   ```
+   
+   This script provides several options:
+   ```bash
+   # Reset database and create fresh test data
+   python3 setup_test_data.py --reset
+   
+   # Only fix enum values in database (if you have issues with tickets not showing)
+   python3 setup_test_data.py --fix-enums
    ```
 
 5. Start the development server:

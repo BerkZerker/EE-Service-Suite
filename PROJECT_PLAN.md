@@ -173,12 +173,13 @@ Future versions will expand to include Shopify integration and advanced features
 
 ### Phase 4: Ticket Management Features (Weeks 5-6)
 - [x] Implement ticket creation flow
-- [ ] Build ticket detail view
+- [x] Build ticket detail view
 - [x] Create ticket list with filtering capabilities
-- [ ] Implement status updates and history tracking
+- [x] Implement status updates and history tracking
 - [ ] Develop archiving and restoration functionality
 - [x] Add customer lookup during ticket creation
 - [x] Implement parts and services selection
+- [x] Create parts management for tickets
 
 ### Phase 5: Search & Filtering System (Week 7)
 - [ ] Develop advanced search functionality

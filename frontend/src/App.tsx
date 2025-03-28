@@ -14,6 +14,7 @@ const Login = lazy(() => import('./pages/Login'))
 const TicketList = lazy(() => import('./pages/TicketList'))
 const CreateTicket = lazy(() => import('./pages/CreateTicket'))
 const EditTicket = lazy(() => import('./pages/EditTicket'))
+const TicketDetail = lazy(() => import('./pages/TicketDetail'))
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path="tickets" element={<TicketList />} />
             <Route path="tickets/new" element={<CreateTicket />} />
+            <Route path="tickets/:id" element={<TicketDetail />} />
             <Route path="tickets/:id/edit" element={<EditTicket />} />
             <Route path="*" element={<NotFound />} />
           </Route>
