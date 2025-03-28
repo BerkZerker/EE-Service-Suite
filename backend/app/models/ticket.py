@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, ForeignKey, Enum, Float, DateTime
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, Enum, Float, DateTime, Boolean
 from sqlalchemy.orm import relationship
 import enum
 from datetime import datetime
@@ -32,6 +32,7 @@ class Ticket(BaseModel):
     status = Column(Enum(TicketStatus), default=TicketStatus.INTAKE)
     priority = Column(Enum(TicketPriority), default=TicketPriority.MEDIUM)
     estimated_completion = Column(DateTime, nullable=True)
+    is_archived = Column(Boolean, default=False, index=True)
     
     # Relationships
     bike_id = Column(Integer, ForeignKey("bikes.id"))
