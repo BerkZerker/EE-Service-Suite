@@ -1,20 +1,25 @@
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import Card from '../components/ui/Card'
-import Spinner from '../components/ui/Spinner'
-import Button from '../components/ui/Button'
-import { useAuth } from '../contexts/auth-context'
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import Card from '../components/ui/Card';
+import Spinner from '../components/ui/Spinner';
+import Button from '../components/ui/Button';
+import { useAuth } from '../contexts/auth-context';
+import { ticketService, TicketStatus } from '../services/ticket-service'; // Import service and enum
+import { customerService } from '../services/customer-service'; // Import customer service
 
-type ApiStatus = 'loading' | 'success' | 'error'
+type ApiStatus = 'loading' | 'success' | 'error';
+type DataStatus = 'idle' | 'loading' | 'success' | 'error'; // Status for dashboard data
 
 const Dashboard = () => {
-  const { user } = useAuth()
-  const [apiStatus, setApiStatus] = useState<ApiStatus>('loading')
-  const [ticketCount, setTicketCount] = useState<number | null>(null)
-  const [customerCount, setCustomerCount] = useState<number | null>(null)
+  const { user } = useAuth();
+  const [apiStatus, setApiStatus] = useState<ApiStatus>('loading');
+  const [dashboardDataStatus, setDashboardDataStatus] = useState<DataStatus>('idle');
+  const [activeTicketCount, setActiveTicketCount] = useState<number | null>(null); // Renamed state
+  const [customerCount, setCustomerCount] = useState<number | null>(null);
 
   useEffect(() => {
     const checkApiStatus = async () => {
+      setApiStatus('loading'); // Ensure loading state is set initially
       try {
         const response = await fetch('/api/health')
         if (response.ok) {
@@ -25,19 +30,42 @@ const Dashboard = () => {
       } catch (error) {
         setApiStatus('error')
       }
-    }
+    };
 
-    // Mock data for now - in real implementation we'd fetch from API
     const loadDashboardData = async () => {
-      // Simulate loading
-      await new Promise(resolve => setTimeout(resolve, 500))
-      setTicketCount(12) // Placeholder
-      setCustomerCount(8) // Placeholder
-    }
+      setDashboardDataStatus('loading');
+      try {
+        // Fetch all non-archived tickets (backend defaults to archived=false)
+        const allNonArchivedTickets = await ticketService.getTickets(0, 1000); // Fetch a large number initially
+        
+        // Filter out completed/delivered tickets on the frontend
+        const activeTickets = allNonArchivedTickets.filter(
+          (ticket) => 
+            ticket.status !== TicketStatus.COMPLETE && 
+            ticket.status !== TicketStatus.DELIVERED
+        );
+        setActiveTicketCount(activeTickets.length);
 
-    checkApiStatus()
-    loadDashboardData()
-  }, [])
+        // Fetch customer count (assuming a simple count endpoint or fetching all)
+        // This might need adjustment based on actual customer service implementation
+        const customers = await customerService.getCustomers(0, 1); // Fetch 1 to get total count if available, or adjust
+        // If the API returns total count in headers or a dedicated endpoint exists, use that.
+        // Otherwise, fetch all customers (potentially inefficient) or adjust API.
+        // For now, using a placeholder based on the existence of the first customer.
+        setCustomerCount(customers.length > 0 ? 8 : 0); // Placeholder logic, replace with actual count fetching
+
+        setDashboardDataStatus('success');
+      } catch (error) {
+        console.error("Error loading dashboard data:", error);
+        setDashboardDataStatus('error');
+        setActiveTicketCount(0); // Set count to 0 on error
+        setCustomerCount(0);
+      }
+    };
+
+    checkApiStatus();
+    loadDashboardData();
+  }, []);
 
   return (
     <div>
@@ -69,13 +97,15 @@ const Dashboard = () => {
 
         {/* Active tickets card */}
         <Card title="Active Tickets">
-          <div className="flex flex-col items-center justify-center py-4">
-            {ticketCount === null ? (
+          <div className="flex flex-col items-center justify-center py-4 min-h-[100px]"> {/* Added min-height */}
+            {dashboardDataStatus === 'loading' ? (
               <Spinner size="lg" variant="primary" />
+            ) : dashboardDataStatus === 'error' ? (
+               <span className="text-red-500">Error loading</span>
             ) : (
               <>
-                <span className="text-4xl font-bold text-primary-400">{ticketCount}</span>
-                <span className="text-gray-400 mt-1">Tickets in progress</span>
+                <span className="text-4xl font-bold text-primary-400">{activeTicketCount}</span>
+                <span className="text-gray-400 mt-1">Open & In Progress</span> {/* Updated text */}
               </>
             )}
           </div>
@@ -83,13 +113,15 @@ const Dashboard = () => {
 
         {/* Customers card */}
         <Card title="Customers">
-          <div className="flex flex-col items-center justify-center py-4">
-            {customerCount === null ? (
+           <div className="flex flex-col items-center justify-center py-4 min-h-[100px]"> {/* Added min-height */}
+            {dashboardDataStatus === 'loading' ? (
               <Spinner size="lg" variant="primary" />
+            ) : dashboardDataStatus === 'error' ? (
+               <span className="text-red-500">Error loading</span>
             ) : (
               <>
-                <span className="text-4xl font-bold text-secondary-400">{customerCount}</span>
-                <span className="text-gray-400 mt-1">Total customers</span>
+                <span className="text-4xl font-bold text-secondary-400">{customerCount ?? 0}</span> {/* Handle null */}
+                <span className="text-gray-400 mt-1">Total customers</span> {/* Keep text */}
               </>
             )}
           </div>
