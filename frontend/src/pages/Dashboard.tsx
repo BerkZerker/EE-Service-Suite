@@ -72,10 +72,12 @@ const Dashboard = () => {
       <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
       
       <div className="mb-6">
-        <h2 className="text-xl font-medium text-gray-200">
+        {/* Use theme text color */}
+        <h2 className="text-xl font-medium text-[var(--color-text)]"> 
           Welcome back, {user?.full_name || 'User'}
         </h2>
-        <p className="text-gray-400">
+         {/* Use theme text color with opacity */}
+        <p className="text-[var(--color-text)] opacity-75">
           Here's what's happening with your service operations today
         </p>
       </div>
@@ -104,8 +106,10 @@ const Dashboard = () => {
                <span className="text-red-500">Error loading</span>
             ) : (
               <>
-                <span className="text-4xl font-bold text-primary-400">{activeTicketCount}</span>
-                <span className="text-gray-400 mt-1">Open & In Progress</span> {/* Updated text */}
+                 {/* Use theme primary color */}
+                <span className="text-4xl font-bold text-[var(--color-primary)]">{activeTicketCount}</span>
+                 {/* Use theme text color with opacity */}
+                <span className="text-[var(--color-text)] opacity-75 mt-1">Open & In Progress</span>
               </>
             )}
           </div>
@@ -120,8 +124,10 @@ const Dashboard = () => {
                <span className="text-red-500">Error loading</span>
             ) : (
               <>
-                <span className="text-4xl font-bold text-secondary-400">{customerCount ?? 0}</span> {/* Handle null */}
-                <span className="text-gray-400 mt-1">Total customers</span> {/* Keep text */}
+                 {/* Use theme secondary color */}
+                <span className="text-4xl font-bold text-[var(--color-secondary)]">{customerCount ?? 0}</span> {/* Handle null */}
+                 {/* Use theme text color with opacity */}
+                <span className="text-[var(--color-text)] opacity-75 mt-1">Total customers</span>
               </>
             )}
           </div>
@@ -139,14 +145,12 @@ const Dashboard = () => {
           }
         >
           <div className="py-6 flex flex-col items-center justify-center gap-4">
-            <p className="text-gray-300">Manage customer service tickets in the EE Service Suite</p>
+            <p className="text-[var(--color-text)] opacity-75">Manage customer service tickets in the EE Service Suite</p> {/* Use theme text color */}
             <div className="flex gap-4">
               <Link to="/tickets">
                 <Button variant="primary">View All Tickets</Button>
               </Link>
-              <Link to="/tickets/new">
-                <Button variant="secondary">Create New Ticket</Button>
-              </Link>
+              {/* Removed redundant Create New Ticket button */}
             </div>
           </div>
         </Card>

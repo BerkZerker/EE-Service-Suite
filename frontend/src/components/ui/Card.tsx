@@ -20,18 +20,18 @@ export const Card: React.FC<CardProps> = ({
   return (
     <div className={`card overflow-hidden ${className}`}>
       {(title || headerAction) && (
-        // Header: Light: lighter gray bg, gray border. Dark: slightly lighter dark bg, darker gray border
-        <div className="px-4 py-3 bg-gray-50 border-b border-gray-200 flex justify-between items-center dark:bg-gray-700/50 dark:border-gray-700">
-          {/* Title text color should inherit from .card */}
-          {title && <h3 className="text-lg font-medium">{title}</h3>}
+        // Header: Use theme variables - Background matches card body, theme border, theme text
+        <div className="px-4 py-3 bg-[var(--color-background)] border-b border-[var(--color-border)] flex justify-between items-center">
+          {/* Title text color uses theme text color */}
+          {title && <h3 className="text-lg font-medium text-[var(--color-text)]">{title}</h3>}
           {headerAction && <div>{headerAction}</div>}
         </div>
       )}
       {/* Main content padding */}
       <div className="p-4">{children}</div>
       {footer && (
-         // Footer: Light: lighter gray bg, gray border. Dark: slightly lighter dark bg, darker gray border
-        <div className="px-4 py-3 bg-gray-50 border-t border-gray-200 dark:bg-gray-700/50 dark:border-gray-700">{footer}</div>
+         // Footer: Use theme variables - Accent background, theme border
+        <div className="px-4 py-3 bg-[var(--color-accent)] bg-opacity-20 border-t border-[var(--color-border)]">{footer}</div> // Using accent with opacity for footer
       )}
     </div>
   );

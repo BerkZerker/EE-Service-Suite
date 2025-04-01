@@ -26,13 +26,17 @@ const getSizeClasses = (size: SpinnerProps['size']): string => {
 const getVariantClasses = (variant: SpinnerProps['variant']): string => {
   switch (variant) {
     case 'primary':
-      return 'text-primary-500';
+      // Use CSS variable for primary color
+      return 'text-[var(--color-primary)]';
     case 'secondary':
-      return 'text-secondary-500';
+       // Use CSS variable for secondary color
+      return 'text-[var(--color-secondary)]';
     case 'white':
+      // Keep white as an option if needed for specific contexts
       return 'text-white';
     default:
-      return 'text-primary-500';
+       // Default to primary color using CSS variable
+      return 'text-[var(--color-primary)]';
   }
 };
 

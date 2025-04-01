@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '../contexts/auth-context';
+import ThemeToggle from '../components/ui/ThemeToggle'; // Import ThemeToggle
+import Button from '../components/ui/Button'; // Import Button component
 
 // Form validation schema
 const loginSchema = z.object({
@@ -42,68 +44,82 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <div className="max-w-md w-full bg-gray-800 rounded-lg shadow-md p-8 space-y-8">
+    // Use theme background
+    <div className="min-h-screen flex items-center justify-center bg-[var(--color-background)] relative p-4">
+       {/* Add Theme Toggle Button to top right */}
+       <div className="absolute top-4 right-4">
+         <ThemeToggle />
+       </div>
+
+      {/* Use card class for consistent styling */}
+      <div className="card max-w-md w-full p-8 space-y-8"> {/* Removed hardcoded bg/shadow */}
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-white">EE Service Suite</h1>
-          <p className="mt-2 text-gray-400">Sign in to your account</p>
+           {/* Use theme text color */}
+          <h1 className="text-2xl font-bold text-[var(--color-text)]">EE Service Suite</h1>
+           {/* Use theme text color with opacity */}
+          <p className="mt-2 text-[var(--color-text)] opacity-75">Sign in to your account</p>
         </div>
         
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
           {(error || submitError) && (
+             // Keep error styling specific for now
             <div className="bg-red-900/50 text-red-200 p-3 rounded">
               {error || submitError}
             </div>
           )}
           
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-300">
+             {/* Use form-label class */}
+            <label htmlFor="email" className="form-label">
               Email
             </label>
             <div className="mt-1">
+              {/* Use form-input class */}
               <input
                 id="email"
                 type="email"
                 autoComplete="email"
-                className={`w-full px-3 py-2 bg-gray-700 border ${
-                  errors.email ? 'border-red-500' : 'border-gray-600'
-                } rounded-md text-white focus:outline-none focus:ring-2 focus:ring-primary-500`}
+                className={`form-input ${errors.email ? 'border-red-500' : 'border-[var(--color-border)]'}`} // Add error border conditionally
                 {...register('email')}
               />
               {errors.email && (
-                <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
+                 // Use form-error class
+                <p className="form-error">{errors.email.message}</p>
               )}
             </div>
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-300">
+             {/* Use form-label class */}
+            <label htmlFor="password" className="form-label">
               Password
             </label>
             <div className="mt-1">
+               {/* Use form-input class */}
               <input
                 id="password"
                 type="password"
                 autoComplete="current-password"
-                className={`w-full px-3 py-2 bg-gray-700 border ${
-                  errors.password ? 'border-red-500' : 'border-gray-600'
-                } rounded-md text-white focus:outline-none focus:ring-2 focus:ring-primary-500`}
+                className={`form-input ${errors.password ? 'border-red-500' : 'border-[var(--color-border)]'}`} // Add error border conditionally
                 {...register('password')}
               />
               {errors.password && (
-                <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
+                 // Use form-error class
+                <p className="form-error">{errors.password.message}</p>
               )}
             </div>
           </div>
 
           <div>
-            <button
+             {/* Use Button component */}
+            <Button
               type="submit"
-              disabled={isSubmitting}
-              className="w-full px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              variant="primary" // Use primary (orange) button
+              isLoading={isSubmitting}
+              className="w-full"
             >
               {isSubmitting ? 'Signing in...' : 'Sign in'}
-            </button>
+            </Button>
           </div>
         </form>
       </div>

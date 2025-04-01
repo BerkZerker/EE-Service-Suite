@@ -48,24 +48,24 @@ const MainLayout = () => {
   const { user, logout } = useAuth()
 
   return (
-    // Apply base light theme, dark theme overrides
-    <div className="flex h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-white">
+    // Use CSS variables for background and text
+    <div className="flex h-screen bg-[var(--color-background)] text-[var(--color-text)]">
       {/* Sidebar */}
-      <aside 
-        // Light: light gray bg, gray border. Dark: dark gray bg, darker gray border
-        className={`fixed inset-y-0 z-10 flex flex-col flex-shrink-0 w-64 max-h-screen overflow-hidden transition-all transform bg-gray-100 border-r border-gray-200 shadow-lg lg:z-auto lg:static lg:shadow-none dark:bg-gray-800 dark:border-gray-700 ${
+      <aside
+        // Use CSS variables for background and border
+        className={`fixed inset-y-0 z-10 flex flex-col flex-shrink-0 w-64 max-h-screen overflow-hidden transition-all transform bg-[var(--color-background)] border-r border-[var(--color-border)] shadow-lg lg:z-auto lg:static lg:shadow-none ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
         {/* Sidebar Header */}
-        {/* Light: gray border. Dark: darker gray border */}
-        <div className="flex items-center justify-between flex-shrink-0 h-16 px-6 border-b border-gray-200 dark:border-gray-700">
-          {/* Reverted title color - primary-300 will be blue in both modes */}
-          <span className="text-xl font-semibold text-primary-300">EE Service Suite</span>
+        {/* Use CSS variables for border */}
+        <div className="flex items-center justify-between flex-shrink-0 h-16 px-6 border-b border-[var(--color-border)]">
+          {/* Use CSS variable for title color */}
+          <span className="text-xl font-semibold text-[var(--color-primary)]">EE Service Suite</span>
           <button
             onClick={() => setSidebarOpen(false)}
-            // Light: gray text, lighter gray hover. Dark: light gray text, darker gray hover
-            className="p-1 transition-colors duration-200 rounded-md lg:hidden text-gray-600 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700"
+            // Use CSS variables for text and hover background, ensure hover text uses --color-text
+            className="p-1 transition-colors duration-200 rounded-md lg:hidden text-[var(--color-text)] hover:bg-[var(--color-accent)] hover:text-[var(--color-text)]"
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -81,9 +81,10 @@ const MainLayout = () => {
                   className={({ isActive }) =>
                     `flex items-center p-2 space-x-2 rounded-md transition-colors duration-150 ${
                       isActive
-                        ? 'bg-primary-500 text-white' // Active link style (use blue primary in both modes)
-                        // Light: gray text, lighter gray hover. Dark: light gray text, darker gray hover
-                        : 'text-gray-600 hover:bg-gray-200 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-gray-100' // Inactive link style
+                        // Use CSS variables for active link style - Use --color-text for dark mode text
+                        ? 'bg-[var(--color-primary)] text-[var(--color-text)] dark:text-[var(--color-text)]' // Explicitly set dark text
+                        // Use CSS variables for inactive link style, ensure hover text uses --color-text
+                        : 'text-[var(--color-text)] hover:bg-[var(--color-accent)] hover:text-[var(--color-text)]'
                     }`
                   }
                   end // Use 'end' prop for Dashboard link to avoid matching all routes starting with '/'
@@ -101,9 +102,10 @@ const MainLayout = () => {
                   className={({ isActive }) =>
                     `flex items-center p-2 space-x-2 rounded-md transition-colors duration-150 ${
                       isActive
-                        ? 'bg-primary-500 text-white' // Active link style (use blue primary in both modes)
-                        // Light: gray text, lighter gray hover. Dark: light gray text, darker gray hover
-                        : 'text-gray-600 hover:bg-gray-200 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-gray-100'
+                        // Use CSS variables for active link style - Use --color-text for dark mode text
+                        ? 'bg-[var(--color-primary)] text-[var(--color-text)] dark:text-[var(--color-text)]' // Explicitly set dark text
+                        // Use CSS variables for inactive link style, ensure hover text uses --color-text
+                        : 'text-[var(--color-text)] hover:bg-[var(--color-accent)] hover:text-[var(--color-text)]'
                     }`
                   }
                 >
@@ -119,12 +121,12 @@ const MainLayout = () => {
       {/* Main content */}
       <div className="flex flex-col flex-1 max-h-screen overflow-x-hidden overflow-y-auto">
         {/* Header */}
-        {/* Light: white bg, gray border. Dark: dark gray bg, darker gray border */}
-        <header className="flex items-center justify-between flex-shrink-0 h-16 px-6 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-          <button 
+        {/* Use CSS variables for background and border */}
+        <header className="flex items-center justify-between flex-shrink-0 h-16 px-6 bg-[var(--color-background)] border-b border-[var(--color-border)]">
+          <button
             onClick={() => setSidebarOpen(true)}
-            // Light: gray text, lighter gray hover. Dark: light gray text, darker gray hover
-            className="p-1 transition-colors duration-200 rounded-md lg:hidden text-gray-600 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700"
+             // Use CSS variables for text and hover background, ensure hover text uses --color-text
+            className="p-1 transition-colors duration-200 rounded-md lg:hidden text-[var(--color-text)] hover:bg-[var(--color-accent)] hover:text-[var(--color-text)]"
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -137,12 +139,12 @@ const MainLayout = () => {
 
             {/* User menu */}
             <div className="relative">
-              <button 
+              <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                 // Light: gray text, lighter gray hover. Dark: light gray text, darker gray hover
-                className="flex items-center space-x-2 p-2 rounded-md text-gray-600 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700"
+                 // Use CSS variables for text and hover background, ensure hover text uses --color-text
+                className="flex items-center space-x-2 p-2 rounded-md text-[var(--color-text)] hover:bg-[var(--color-accent)] hover:text-[var(--color-text)]"
               >
-                {/* Text color will inherit from parent div */}
+                {/* Text color uses CSS variable from parent */}
                 <span>{user?.full_name || user?.email}</span>
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
@@ -151,13 +153,13 @@ const MainLayout = () => {
 
               {/* Dropdown menu */}
               {userMenuOpen && (
-                 // Light: white bg, gray border. Dark: dark gray bg, darker gray border
-                <div className="absolute right-0 w-48 mt-2 bg-white rounded-md shadow-lg z-10 border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                 // Use CSS variables for background and border
+                <div className="absolute right-0 w-48 mt-2 bg-[var(--color-background)] rounded-md shadow-lg z-10 border border-[var(--color-border)]">
                   <div className="py-1">
                     <button
                       onClick={logout}
-                      // Light: gray text, lighter gray hover. Dark: light gray text, darker gray hover
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                      // Use CSS variables for text and hover background, ensure hover text uses --color-text
+                      className="block w-full text-left px-4 py-2 text-sm text-[var(--color-text)] hover:bg-[var(--color-accent)] hover:text-[var(--color-text)]"
                     >
                       Sign out
                     </button>
@@ -169,8 +171,8 @@ const MainLayout = () => {
         </header>
         
         {/* Main content container */}
-        {/* Light: very light gray bg. Dark: dark gray bg */}
-        <main className="flex-1 p-6 overflow-auto bg-gray-50 dark:bg-gray-900">
+        {/* Use CSS variable for background */}
+        <main className="flex-1 p-6 overflow-auto bg-[var(--color-background)]">
           <Outlet />
         </main>
       </div>

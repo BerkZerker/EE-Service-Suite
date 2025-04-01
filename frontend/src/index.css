@@ -3,6 +3,14 @@
 @tailwind utilities;
 
 :root {
+  /* Light Theme */
+  --color-background: #FFFFFF;
+  --color-text: #292F2F;
+  --color-primary: #E86C2C;
+  --color-secondary: #4A6E8A;
+  --color-accent: #F39C6B;
+  --color-border: #E5E7E7;
+
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -13,63 +21,65 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.dark {
+  /* Dark Theme */
+  --color-background: #1A1E1E;
+  --color-text: #F0F2F2;
+  --color-primary: #E86C2C; /* Same as light */
+  --color-secondary: #4A6E8A; /* Same as light */
+  --color-accent: #F39C6B; /* Same as light */
+  --color-border: #3A4040;
+}
+
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  /* Default to light theme: Tailwind defaults (bg-white text-gray-900) */
-  @apply text-gray-900 bg-white; 
-  /* Apply dark theme styles when .dark class is present */
-  @apply dark:bg-gray-900 dark:text-white; 
+  /* Use CSS variables for background and text */
+  @apply bg-[var(--color-background)] text-[var(--color-text)];
 }
 
 /* Custom Tailwind Utilities */
 @layer components {
   .btn-primary {
-    /* Light mode: Use original primary blue */
-    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded transition duration-150 ease-in-out;
-    /* Dark mode: Use primary blue */
-    @apply dark:bg-primary-600 dark:hover:bg-primary-700 dark:text-white;
+    /* Use CSS Variables, ensure hover text uses --color-text */
+    @apply bg-[var(--color-primary)] hover:bg-[var(--color-accent)] text-[var(--color-text)] font-medium py-2 px-4 rounded transition duration-150 ease-in-out;
+    /* Dark mode uses the same variables */
   }
-  
+
   .btn-secondary {
-    /* Light mode: Use original secondary color */
-    @apply bg-secondary-600 hover:bg-secondary-700 text-white font-medium py-2 px-4 rounded transition duration-150 ease-in-out;
-    /* Dark mode: Use primary blue outline style */
-    @apply dark:bg-transparent dark:border dark:border-primary-500 dark:text-primary-500 dark:hover:bg-primary-900/20;
+    /* Light mode: Use CSS Variables, ensure hover text uses --color-text */
+    @apply bg-[var(--color-secondary)] hover:bg-[var(--color-accent)] text-[var(--color-text)] font-medium py-2 px-4 rounded transition duration-150 ease-in-out;
+    /* Dark mode: Use CSS Variables - Outline style, ensure hover text uses --color-text */
+    @apply dark:bg-transparent dark:border dark:border-[var(--color-secondary)] dark:text-[var(--color-secondary)] dark:hover:bg-[var(--color-accent)] dark:hover:text-[var(--color-text)];
   }
-  
+
   .btn-danger {
     @apply bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded transition duration-150 ease-in-out;
   }
   
   .btn-outline {
-    /* Light mode */
-    @apply bg-transparent border border-gray-300 hover:bg-gray-100 text-gray-700 font-medium py-2 px-4 rounded transition duration-150 ease-in-out;
-    /* Dark mode */
-    @apply dark:border-gray-600 dark:hover:bg-gray-700 dark:text-gray-300;
+    /* Use CSS Variables, ensure hover text uses --color-text */
+    @apply bg-transparent border border-[var(--color-border)] hover:bg-[var(--color-accent)] hover:text-[var(--color-text)] text-[var(--color-text)] font-medium py-2 px-4 rounded transition duration-150 ease-in-out;
+    /* Dark mode uses the same variables */
   }
   
   .card {
-    /* Light mode */
-    @apply bg-white rounded-lg shadow-md p-6 text-gray-900 border border-gray-200;
-    /* Dark mode */
-    @apply dark:bg-gray-800 dark:text-white dark:border-gray-700;
+    /* Use CSS Variables */
+    @apply bg-[var(--color-background)] rounded-lg shadow-md p-6 text-[var(--color-text)] border border-[var(--color-border)];
+    /* Dark mode uses the same variables */
   }
   
   .form-input {
-    /* Light mode */
-    @apply w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-500;
-    /* Dark mode */
-    /* Use primary (blue) focus ring in dark mode */
-    @apply dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-primary-500;
+    /* Use CSS Variables */
+    @apply w-full px-3 py-2 bg-[var(--color-background)] border border-[var(--color-border)] rounded-md text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)];
+    /* Dark mode uses the same variables */
   }
 
   .form-label {
-    /* Light mode */
-    @apply block text-sm font-medium text-gray-700 mb-1;
-    /* Dark mode */
-    @apply dark:text-gray-300;
+    /* Use CSS Variables */
+    @apply block text-sm font-medium text-[var(--color-text)] mb-1;
+    /* Dark mode uses the same variables */
   }
 
   .form-error {
@@ -77,10 +87,9 @@ body {
   }
 
   .form-helper {
-    /* Light mode */
-    @apply mt-1 text-sm text-gray-500;
-    /* Dark mode */
-    @apply dark:text-gray-400;
+    /* Use CSS Variables - Using secondary for helper text */
+    @apply mt-1 text-sm text-[var(--color-secondary)];
+    /* Dark mode uses the same variables */
   }
   
   .badge {
@@ -103,13 +112,15 @@ body {
   }
 
   .badge-info {
-    /* Light mode */ @apply badge bg-blue-100 text-blue-800; /* Keep blue for light mode info */
-    /* Dark mode */ @apply dark:bg-gray-700 dark:text-gray-200; /* Use gray for dark mode info */
+    /* Use CSS Variables - Using secondary color */
+    @apply badge bg-[var(--color-secondary)] bg-opacity-20 text-[var(--color-secondary)];
+    /* Dark mode uses the same variables */
   }
 
   .badge-neutral {
-    /* Light mode */ @apply badge bg-gray-100 text-gray-800;
-    /* Dark mode */ @apply dark:bg-gray-700 dark:text-gray-200;
+    /* Use CSS Variables - Using border color */
+    @apply badge bg-[var(--color-border)] text-[var(--color-text)];
+    /* Dark mode uses the same variables */
   }
   
   /* Status indicator styles */
@@ -135,11 +146,14 @@ body {
   }
 
   .status-indicator.info:before {
-    /* Light mode */ @apply bg-blue-500; /* Keep blue for light mode info */
-    /* Dark mode */ @apply dark:bg-gray-500; /* Use gray for dark mode info */
+     /* Use CSS Variables - Using secondary color */
+    @apply bg-[var(--color-secondary)];
+    /* Dark mode uses the same variables */
   }
 
   .status-indicator.neutral:before {
-    @apply bg-gray-500; /* Keep same for both modes */
+     /* Use CSS Variables - Using border color */
+    @apply bg-[var(--color-border)];
+    /* Dark mode uses the same variables */
   }
 }
