@@ -27,20 +27,22 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
     return (
       <div className={className}>
         {label && (
-          <label htmlFor={textAreaId} className="block text-sm font-medium text-gray-300 mb-1">
+          // Use .form-label for theme-aware styling
+          <label htmlFor={textAreaId} className="form-label">
             {label}
           </label>
         )}
-        <div className="relative rounded-md shadow-sm">
+        {/* Removed relative rounded-md shadow-sm, handled by .form-input */}
+        <div className="relative"> 
           <textarea
             ref={ref}
             id={textAreaId}
             rows={rows}
+            // Apply .form-input class
+            // Error border is handled within .form-input logic or added explicitly
             className={`
-              w-full rounded-md shadow-sm 
-              px-3 py-2 bg-gray-700 border 
-              ${error ? 'border-red-500' : 'border-gray-600'} 
-              text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500
+              form-input
+              ${error ? 'border-red-500 focus:ring-red-500' : ''} {/* Add specific error border/focus */}
             `}
             aria-invalid={error ? 'true' : 'false'}
             aria-describedby={helperText || error ? `${textAreaId}-description` : undefined}
@@ -48,9 +50,10 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           />
         </div>
         {(helperText || error) && (
+          // Use .form-error or .form-helper for theme-aware styling
           <p
             id={`${textAreaId}-description`}
-            className={`mt-1 text-sm ${error ? 'text-red-500' : 'text-gray-400'}`}
+            className={error ? 'form-error' : 'form-helper'}
           >
             {error || helperText}
           </p>

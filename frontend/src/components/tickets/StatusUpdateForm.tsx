@@ -56,7 +56,8 @@ const StatusUpdateForm: React.FC<StatusUpdateFormProps> = ({
   
   return (
     <Card className={className}>
-      <h2 className="text-xl font-semibold text-white mb-4">Update Status</h2>
+       {/* Heading text color inherits from Card */}
+      <h2 className="text-xl font-semibold mb-4">Update Status</h2>
       
       <form onSubmit={handleSubmit}>
         <div className="space-y-4">

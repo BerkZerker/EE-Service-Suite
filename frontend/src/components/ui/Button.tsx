@@ -13,25 +13,33 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const getVariantClasses = (variant: ButtonVariant): string => {
+  // Note: Dark mode styles added/adjusted to align with index.css where applicable
   switch (variant) {
     case 'primary':
-      return 'bg-primary-600 hover:bg-primary-700 text-white';
+      // Use primary (blue) for both light and dark modes
+      return 'bg-primary-600 hover:bg-primary-700 text-white'; // Primary is blue in both modes
     case 'secondary':
-      return 'bg-secondary-600 hover:bg-secondary-700 text-white';
+      // Use secondary for light, blue outline for dark
+      return 'bg-secondary-600 hover:bg-secondary-700 text-white dark:bg-transparent dark:border dark:border-primary-500 dark:text-primary-500 dark:hover:bg-primary-900/20';
     case 'danger':
+      // Danger colors consistent across themes
       return 'bg-red-600 hover:bg-red-700 text-white';
     case 'success':
       return 'bg-green-600 hover:bg-green-700 text-white';
     case 'warning':
+      // Warning colors consistent
       return 'bg-yellow-500 hover:bg-yellow-600 text-black';
     case 'outline':
-      return 'bg-transparent border border-gray-600 hover:bg-gray-700 text-gray-300';
+      // Explicit light/dark variants using gray for dark background
+      return 'bg-transparent border border-gray-300 hover:bg-gray-100 text-gray-700 dark:border-gray-600 dark:hover:bg-gray-700 dark:text-gray-300';
     case 'ghost':
-      return 'bg-transparent hover:bg-gray-700 text-gray-300';
+      // Explicit light/dark variants using gray for dark background
+      return 'bg-transparent hover:bg-gray-100 text-gray-700 dark:hover:bg-gray-700 dark:text-gray-300';
     case 'subtle':
-      return 'bg-gray-800 hover:bg-gray-700 text-gray-300';
-    default:
-      return 'bg-primary-600 hover:bg-primary-700 text-white';
+       // Explicit light/dark variants using gray for dark background
+      return 'bg-gray-100 hover:bg-gray-200 text-gray-800 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300';
+    default: // Default to primary styling (blue)
+      return 'bg-primary-600 hover:bg-primary-700 text-white'; // Removed dark overrides
   }
 };
 
@@ -73,7 +81,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         ref={ref}
-        className={`inline-flex items-center justify-center font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${variantClasses} ${sizeClasses} ${className}`}
+        // Use primary-500 for focus ring in both light and dark modes
+        className={`inline-flex items-center justify-center font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-primary-500 dark:focus:ring-offset-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${variantClasses} ${sizeClasses} ${className}`}
         disabled={disabled || isLoading}
         {...props}
       >

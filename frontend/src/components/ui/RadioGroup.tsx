@@ -37,7 +37,8 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
   return (
     <div className={className}>
       {label && (
-        <label className="block text-sm font-medium text-gray-300 mb-2">{label}</label>
+        // Use .form-label for theme-aware styling
+        <label className="form-label mb-2">{label}</label>
       )}
       <div className={`space-y-2 ${inline ? 'flex flex-wrap gap-4 space-y-0' : ''}`}>
         {options.map((option) => (
@@ -50,20 +51,24 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
                 value={option.value}
                 checked={value === option.value}
                 onChange={handleChange}
-                className="h-4 w-4 text-primary-600 border-gray-600 focus:ring-primary-500 bg-gray-700"
+                // Radio button theme styles: Light: gray border/bg. Dark: darker gray border/bg. Checked/Focus use primary color.
+                className="h-4 w-4 text-primary-600 border-gray-300 focus:ring-primary-500 bg-white dark:bg-gray-700 dark:border-gray-600"
               />
             </div>
             <div className="ml-3 text-sm">
-              <label htmlFor={`${name}-${option.value}`} className="font-medium text-gray-300">
+              {/* Option label theme styles */}
+              <label htmlFor={`${name}-${option.value}`} className="font-medium text-gray-700 dark:text-gray-300">
                 {option.label}
               </label>
               {option.description && (
-                <p className="text-gray-400">{option.description}</p>
+                 // Option description theme styles
+                <p className="text-gray-500 dark:text-gray-400">{option.description}</p>
               )}
             </div>
           </div>
         ))}
       </div>
+      {/* Error styling is likely fine as is */}
       {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
     </div>
   );

@@ -5,7 +5,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: {
+        primary: { // Restored blue
           50: '#f5f8ff',
           100: '#e0ecff',
           200: '#c1d7ff',

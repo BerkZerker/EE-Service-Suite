@@ -15,17 +15,23 @@ export const Card: React.FC<CardProps> = ({
   headerAction,
   footer,
 }) => {
+  // Apply the .card class from index.css for base styling (light/dark)
+  // Keep overflow-hidden and allow additional classes via `className`
   return (
-    <div className={`bg-gray-800 rounded-lg shadow-md overflow-hidden ${className}`}>
+    <div className={`card overflow-hidden ${className}`}>
       {(title || headerAction) && (
-        <div className="px-4 py-3 bg-gray-800 border-b border-gray-700 flex justify-between items-center">
-          {title && <h3 className="text-lg font-medium text-white">{title}</h3>}
+        // Header: Light: lighter gray bg, gray border. Dark: slightly lighter dark bg, darker gray border
+        <div className="px-4 py-3 bg-gray-50 border-b border-gray-200 flex justify-between items-center dark:bg-gray-700/50 dark:border-gray-700">
+          {/* Title text color should inherit from .card */}
+          {title && <h3 className="text-lg font-medium">{title}</h3>}
           {headerAction && <div>{headerAction}</div>}
         </div>
       )}
+      {/* Main content padding */}
       <div className="p-4">{children}</div>
       {footer && (
-        <div className="px-4 py-3 bg-gray-700 border-t border-gray-600">{footer}</div>
+         // Footer: Light: lighter gray bg, gray border. Dark: slightly lighter dark bg, darker gray border
+        <div className="px-4 py-3 bg-gray-50 border-t border-gray-200 dark:bg-gray-700/50 dark:border-gray-700">{footer}</div>
       )}
     </div>
   );

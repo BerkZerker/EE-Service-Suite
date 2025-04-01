@@ -48,19 +48,24 @@ const MainLayout = () => {
   const { user, logout } = useAuth()
 
   return (
-    <div className="flex h-screen bg-gray-900 text-white">
+    // Apply base light theme, dark theme overrides
+    <div className="flex h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-white">
       {/* Sidebar */}
       <aside 
-        className={`fixed inset-y-0 z-10 flex flex-col flex-shrink-0 w-64 max-h-screen overflow-hidden transition-all transform bg-gray-800 border-r border-gray-700 shadow-lg lg:z-auto lg:static lg:shadow-none ${
+        // Light: light gray bg, gray border. Dark: dark gray bg, darker gray border
+        className={`fixed inset-y-0 z-10 flex flex-col flex-shrink-0 w-64 max-h-screen overflow-hidden transition-all transform bg-gray-100 border-r border-gray-200 shadow-lg lg:z-auto lg:static lg:shadow-none dark:bg-gray-800 dark:border-gray-700 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
         {/* Sidebar Header */}
-        <div className="flex items-center justify-between flex-shrink-0 h-16 px-6 border-b border-gray-700">
+        {/* Light: gray border. Dark: darker gray border */}
+        <div className="flex items-center justify-between flex-shrink-0 h-16 px-6 border-b border-gray-200 dark:border-gray-700">
+          {/* Reverted title color - primary-300 will be blue in both modes */}
           <span className="text-xl font-semibold text-primary-300">EE Service Suite</span>
-          <button 
+          <button
             onClick={() => setSidebarOpen(false)}
-            className="p-1 transition-colors duration-200 rounded-md lg:hidden hover:bg-gray-700 text-gray-300"
+            // Light: gray text, lighter gray hover. Dark: light gray text, darker gray hover
+            className="p-1 transition-colors duration-200 rounded-md lg:hidden text-gray-600 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700"
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -73,11 +78,12 @@ const MainLayout = () => {
               <li key={link.text}>
                 <NavLink 
                   to={link.to} 
-                  className={({ isActive }) => 
+                  className={({ isActive }) =>
                     `flex items-center p-2 space-x-2 rounded-md transition-colors duration-150 ${
-                      isActive 
-                        ? 'bg-primary-500 text-white' // Active link style
-                        : 'text-gray-300 hover:bg-gray-700 hover:text-gray-100' // Inactive link style
+                      isActive
+                        ? 'bg-primary-500 text-white' // Active link style (use blue primary in both modes)
+                        // Light: gray text, lighter gray hover. Dark: light gray text, darker gray hover
+                        : 'text-gray-600 hover:bg-gray-200 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-gray-100' // Inactive link style
                     }`
                   }
                   end // Use 'end' prop for Dashboard link to avoid matching all routes starting with '/'
@@ -92,11 +98,12 @@ const MainLayout = () => {
               <li className="mt-2"> {/* Add margin-top if keeping separate */}
                 <NavLink 
                   to="/admin" 
-                  className={({ isActive }) => 
+                  className={({ isActive }) =>
                     `flex items-center p-2 space-x-2 rounded-md transition-colors duration-150 ${
-                      isActive 
-                        ? 'bg-primary-500 text-white' 
-                        : 'text-gray-300 hover:bg-gray-700 hover:text-gray-100'
+                      isActive
+                        ? 'bg-primary-500 text-white' // Active link style (use blue primary in both modes)
+                        // Light: gray text, lighter gray hover. Dark: light gray text, darker gray hover
+                        : 'text-gray-600 hover:bg-gray-200 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-gray-100'
                     }`
                   }
                 >
@@ -112,10 +119,12 @@ const MainLayout = () => {
       {/* Main content */}
       <div className="flex flex-col flex-1 max-h-screen overflow-x-hidden overflow-y-auto">
         {/* Header */}
-        <header className="flex items-center justify-between flex-shrink-0 h-16 px-6 border-b border-gray-700 bg-gray-800">
+        {/* Light: white bg, gray border. Dark: dark gray bg, darker gray border */}
+        <header className="flex items-center justify-between flex-shrink-0 h-16 px-6 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
           <button 
             onClick={() => setSidebarOpen(true)}
-            className="p-1 transition-colors duration-200 rounded-md lg:hidden hover:bg-gray-700 text-gray-300"
+            // Light: gray text, lighter gray hover. Dark: light gray text, darker gray hover
+            className="p-1 transition-colors duration-200 rounded-md lg:hidden text-gray-600 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700"
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -130,8 +139,10 @@ const MainLayout = () => {
             <div className="relative">
               <button 
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-700 text-gray-300"
+                 // Light: gray text, lighter gray hover. Dark: light gray text, darker gray hover
+                className="flex items-center space-x-2 p-2 rounded-md text-gray-600 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700"
               >
+                {/* Text color will inherit from parent div */}
                 <span>{user?.full_name || user?.email}</span>
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
@@ -140,11 +151,13 @@ const MainLayout = () => {
 
               {/* Dropdown menu */}
               {userMenuOpen && (
-                <div className="absolute right-0 w-48 mt-2 bg-gray-800 rounded-md shadow-lg z-10 border border-gray-700">
+                 // Light: white bg, gray border. Dark: dark gray bg, darker gray border
+                <div className="absolute right-0 w-48 mt-2 bg-white rounded-md shadow-lg z-10 border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
                   <div className="py-1">
                     <button
                       onClick={logout}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
+                      // Light: gray text, lighter gray hover. Dark: light gray text, darker gray hover
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
                     >
                       Sign out
                     </button>
@@ -156,7 +169,8 @@ const MainLayout = () => {
         </header>
         
         {/* Main content container */}
-        <main className="flex-1 p-6 overflow-auto bg-gray-900">
+        {/* Light: very light gray bg. Dark: dark gray bg */}
+        <main className="flex-1 p-6 overflow-auto bg-gray-50 dark:bg-gray-900">
           <Outlet />
         </main>
       </div>

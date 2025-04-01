@@ -15,8 +15,10 @@ export const FormGroup: React.FC<FormGroupProps> = ({
 }) => {
   return (
     <div className={`mb-6 ${className}`}>
-      {title && <h3 className="text-lg font-medium text-white mb-2">{title}</h3>}
-      {description && <p className="text-sm text-gray-400 mb-4">{description}</p>}
+      {/* Title text color for light/dark */}
+      {title && <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">{title}</h3>}
+      {/* Description text color for light/dark */}
+      {description && <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{description}</p>}
       <div className="space-y-4">{children}</div>
     </div>
   );

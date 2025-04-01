@@ -40,20 +40,23 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className={className}>
         {label && (
-          <label htmlFor={selectId} className="block text-sm font-medium text-gray-300 mb-1">
+          // Use .form-label for theme-aware styling
+          <label htmlFor={selectId} className="form-label">
             {label}
           </label>
         )}
-        <div className="relative rounded-md shadow-sm">
+        {/* Removed relative rounded-md shadow-sm, handled by .form-input */}
+        <div className="relative"> 
           <select
             ref={ref}
             id={selectId}
+            // Apply .form-input class and keep appearance-none
+            // Error border is handled within .form-input logic or added explicitly
             className={`
-              block w-full rounded-md shadow-sm 
-              py-2 pl-3 pr-10 bg-gray-700 border 
-              ${error ? 'border-red-500' : 'border-gray-600'} 
-              text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500
+              form-input 
+              pr-10 {/* Keep padding for arrow */}
               appearance-none
+              ${error ? 'border-red-500 focus:ring-red-500' : ''} {/* Add specific error border/focus */}
             `}
             aria-invalid={error ? 'true' : 'false'}
             aria-describedby={helperText || error ? `${selectId}-description` : undefined}
@@ -65,10 +68,12 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                 {option.label}
               </option>
             ))}
+            {/* Option styles might need adjustment if they don't inherit correctly, but usually browser default is fine */}
           </select>
-          <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+          {/* Adjust arrow color for theme */}
+          <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none text-gray-400 dark:text-gray-500">
             <svg
-              className="h-5 w-5 text-gray-400"
+              className="h-5 w-5" // Removed text-gray-400, color comes from parent div
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
@@ -83,9 +88,10 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           </div>
         </div>
         {(helperText || error) && (
+          // Use .form-error or .form-helper for theme-aware styling
           <p
             id={`${selectId}-description`}
-            className={`mt-1 text-sm ${error ? 'text-red-500' : 'text-gray-400'}`}
+            className={error ? 'form-error' : 'form-helper'}
           >
             {error || helperText}
           </p>

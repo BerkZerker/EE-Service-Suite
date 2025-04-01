@@ -79,15 +79,17 @@ export const CustomerSelector: React.FC<CustomerSelectorProps> = ({
     <div className={`relative ${className}`}>
       <div className="flex gap-2">
         {selectedCustomer ? (
-          <div className="flex-1 bg-gray-700 rounded-md p-3 border border-gray-600">
+           /* Selected customer display styling for light/dark */
+          <div className="flex-1 bg-gray-100 dark:bg-gray-700 rounded-md p-3 border border-gray-200 dark:border-gray-600">
             <div className="flex justify-between items-start">
               <div>
-                <h3 className="font-medium text-white">{selectedCustomer.full_name}</h3>
-                <p className="text-sm text-gray-300">{selectedCustomer.email}</p>
-                <p className="text-sm text-gray-300">{selectedCustomer.phone}</p>
+                 {/* Text colors for light/dark */}
+                <h3 className="font-medium text-gray-900 dark:text-white">{selectedCustomer.full_name}</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">{selectedCustomer.email}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">{selectedCustomer.phone}</p>
               </div>
               <Button
-                variant="ghost"
+                variant="ghost" /* Assuming Button component handles its own theme variants */
                 size="xs"
                 onClick={() => onCustomerSelect(null as unknown as Customer)}
               >
@@ -111,13 +113,17 @@ export const CustomerSelector: React.FC<CustomerSelectorProps> = ({
 
       {/* Search results dropdown */}
       {showResults && !selectedCustomer && (
-        <div className="absolute z-10 w-full mt-1 bg-gray-800 border border-gray-700 rounded-md shadow-lg max-h-60 overflow-auto">
+         /* Dropdown container styling for light/dark */
+        <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg max-h-60 overflow-auto">
           {loading ? (
-            <div className="p-3 text-center text-gray-400">Loading...</div>
+             /* Text color for light/dark */
+            <div className="p-3 text-center text-gray-500 dark:text-gray-400">Loading...</div>
           ) : error ? (
+             /* Error color is likely fine */
             <div className="p-3 text-center text-red-500">{error}</div>
           ) : customers.length === 0 ? (
-            <div className="p-3 text-center text-gray-400">
+             /* Text color for light/dark */
+            <div className="p-3 text-center text-gray-500 dark:text-gray-400">
               {searchTerm.length < 2 ? 'Type to search' : 'No customers found'}
             </div>
           ) : (
@@ -125,11 +131,13 @@ export const CustomerSelector: React.FC<CustomerSelectorProps> = ({
               {customers.map((customer) => (
                 <li
                   key={customer.id}
-                  className="px-4 py-2 hover:bg-gray-700 cursor-pointer border-b border-gray-700 last:border-0"
+                   /* List item styling for light/dark */
+                  className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer border-b border-gray-200 dark:border-gray-700 last:border-0"
                   onClick={() => handleCustomerClick(customer)}
                 >
-                  <div className="font-medium text-white">{customer.full_name}</div>
-                  <div className="text-sm text-gray-400 flex gap-3">
+                   {/* Text colors for light/dark */}
+                  <div className="font-medium text-gray-900 dark:text-white">{customer.full_name}</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400 flex gap-3">
                     <span>{customer.email}</span>
                     <span>{customer.phone}</span>
                   </div>
