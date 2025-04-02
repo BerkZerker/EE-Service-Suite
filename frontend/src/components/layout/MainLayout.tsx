@@ -2,6 +2,7 @@ import { Outlet, Link, NavLink } from 'react-router-dom'; // Import NavLink
 import { useState } from 'react';
 import { useAuth } from '../../contexts/auth-context';
 import ThemeToggle from '../ui/ThemeToggle'; // Import ThemeToggle
+import Button from '../ui/Button'; // Import Button component
 import { LuBike, LuComponent } from 'react-icons/lu'; // Revert to correct submodule import path
 
 // Placeholder Icons (Replace with actual icons later if needed)
@@ -64,8 +65,8 @@ const MainLayout = () => {
           <span className="text-xl font-semibold text-[var(--color-primary)]">EE Service Suite</span>
           <button
             onClick={() => setSidebarOpen(false)}
-            // Use CSS variables for text and hover background, ensure hover text uses --color-text
-            className="p-1 transition-colors duration-200 rounded-md lg:hidden text-[var(--color-text)] hover:bg-[var(--color-accent)] hover:text-[var(--color-text)]"
+            // Use CSS variables for text and hover background, ensure hover text uses --color-primary-text
+            className="p-1 transition-colors duration-200 rounded-md lg:hidden text-[var(--color-text)] hover:bg-[var(--color-accent)] hover:text-[var(--color-primary-text)]"
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -81,10 +82,10 @@ const MainLayout = () => {
                   className={({ isActive }) =>
                     `flex items-center p-2 space-x-2 rounded-md transition-colors duration-150 ${
                       isActive
-                        // Use CSS variables for active link style - Use --color-text for dark mode text
-                        ? 'bg-[var(--color-primary)] text-[var(--color-text)] dark:text-[var(--color-text)]' // Explicitly set dark text
-                        // Use CSS variables for inactive link style, ensure hover text uses --color-text
-                        : 'text-[var(--color-text)] hover:bg-[var(--color-accent)] hover:text-[var(--color-text)]'
+                        // Use CSS variables for active link style - Use --color-primary-text for light mode text
+                        ? 'bg-[var(--color-primary)] text-[var(--color-primary-text)] dark:text-[var(--color-text)]' // Use primary-text for light, keep dark explicit
+                        // Use CSS variables for inactive link style, ensure hover text uses --color-primary-text
+                        : 'text-[var(--color-text)] hover:bg-[var(--color-accent)] hover:text-[var(--color-primary-text)]'
                     }`
                   }
                   end // Use 'end' prop for Dashboard link to avoid matching all routes starting with '/'
@@ -102,10 +103,10 @@ const MainLayout = () => {
                   className={({ isActive }) =>
                     `flex items-center p-2 space-x-2 rounded-md transition-colors duration-150 ${
                       isActive
-                        // Use CSS variables for active link style - Use --color-text for dark mode text
-                        ? 'bg-[var(--color-primary)] text-[var(--color-text)] dark:text-[var(--color-text)]' // Explicitly set dark text
-                        // Use CSS variables for inactive link style, ensure hover text uses --color-text
-                        : 'text-[var(--color-text)] hover:bg-[var(--color-accent)] hover:text-[var(--color-text)]'
+                        // Use CSS variables for active link style - Use --color-primary-text for light mode text
+                        ? 'bg-[var(--color-primary)] text-[var(--color-primary-text)] dark:text-[var(--color-text)]' // Use primary-text for light, keep dark explicit
+                        // Use CSS variables for inactive link style, ensure hover text uses --color-primary-text
+                        : 'text-[var(--color-text)] hover:bg-[var(--color-accent)] hover:text-[var(--color-primary-text)]'
                     }`
                   }
                 >
@@ -125,8 +126,8 @@ const MainLayout = () => {
         <header className="flex items-center justify-between flex-shrink-0 h-16 px-6 bg-[var(--color-background)] border-b border-[var(--color-border)]">
           <button
             onClick={() => setSidebarOpen(true)}
-             // Use CSS variables for text and hover background, ensure hover text uses --color-text
-            className="p-1 transition-colors duration-200 rounded-md lg:hidden text-[var(--color-text)] hover:bg-[var(--color-accent)] hover:text-[var(--color-text)]"
+             // Use CSS variables for text and hover background, ensure hover text uses --color-primary-text
+            className="p-1 transition-colors duration-200 rounded-md lg:hidden text-[var(--color-text)] hover:bg-[var(--color-accent)] hover:text-[var(--color-primary-text)]"
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -139,17 +140,17 @@ const MainLayout = () => {
 
             {/* User menu */}
             <div className="relative">
-              <button
+              <Button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                 // Use CSS variables for text and hover background, ensure hover text uses --color-text
-                className="flex items-center space-x-2 p-2 rounded-md text-[var(--color-text)] hover:bg-[var(--color-accent)] hover:text-[var(--color-text)]"
+                variant="outline" // Apply outline variant
+                size="sm" // Apply small size
+                className="flex items-center justify-center p-2 rounded-md text-[var(--color-text)]" // Ensure icon is centered, kept padding
               >
-                {/* Text color uses CSS variable from parent */}
-                <span>{user?.full_name || user?.email}</span>
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                {/* Removed user name span */}
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> {/* Adjusted icon size to match ThemeToggle */}
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                 </svg>
-              </button>
+              </Button>
 
               {/* Dropdown menu */}
               {userMenuOpen && (
@@ -158,8 +159,8 @@ const MainLayout = () => {
                   <div className="py-1">
                     <button
                       onClick={logout}
-                      // Use CSS variables for text and hover background, ensure hover text uses --color-text
-                      className="block w-full text-left px-4 py-2 text-sm text-[var(--color-text)] hover:bg-[var(--color-accent)] hover:text-[var(--color-text)]"
+                      // Use CSS variables for text and hover background, ensure hover text uses --color-primary-text
+                      className="block w-full text-left px-4 py-2 text-sm text-[var(--color-text)] hover:bg-[var(--color-accent)] hover:text-[var(--color-primary-text)]"
                     >
                       Sign out
                     </button>
