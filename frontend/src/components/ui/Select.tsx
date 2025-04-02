@@ -64,16 +64,20 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             {...props}
           >
             {options.map((option) => (
-              <option key={option.value} value={option.value}>
+              // Add theme-aware background and text color to options
+              <option 
+                key={option.value} 
+                value={option.value} 
+                className="bg-input text-text-primary"
+              >
                 {option.label}
               </option>
             ))}
-            {/* Option styles might need adjustment if they don't inherit correctly, but usually browser default is fine */}
           </select>
           {/* Adjust arrow color for theme */}
-          <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none text-gray-400 dark:text-gray-500">
+          <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none text-text-secondary">
             <svg
-              className="h-5 w-5" // Removed text-gray-400, color comes from parent div
+              className="h-5 w-5" // Color is inherited from parent div
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"

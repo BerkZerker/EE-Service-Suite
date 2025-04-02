@@ -207,10 +207,9 @@ const PartsManagement: React.FC<PartsManagementProps> = ({
           </table>
         </div>
       ) : (
-         // Placeholder styling for light/dark
-        <div className="bg-gray-50 rounded p-4 text-center dark:bg-gray-800">
-          <p className="text-gray-500 dark:text-gray-400">No parts added to this ticket</p>
-          <p className="text-gray-400 dark:text-gray-500 text-sm mt-1">Click "Add Parts" to add parts to this ticket</p>
+        <div className="bg-[var(--color-background)] rounded p-4 text-center">
+          <p className="text-theme-text">No parts added to this ticket</p>
+          <p className="text-theme-secondary text-sm mt-1">Click "Add Parts" to add parts to this ticket</p>
         </div>
       )}
     </Card>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ticketService } from '../services';
 import { TicketStatus, TicketPriority, type Ticket } from '../services/ticket-service';
-import { Card, Button, Spinner, Select } from '../components/ui';
+import { Card, Button, Spinner, Select } from '../components/ui'; // Remove ToggleSwitch import
 import { formatDate, formatCurrency, ticketStatusColors, ticketPriorityColors, archivedTicketStyles } from '../utils/ticketUtils';
 
 const TicketList: React.FC = () => {
@@ -85,8 +85,8 @@ const TicketList: React.FC = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white">Service Tickets</h1>
-          <p className="text-gray-400">Manage customer service tickets</p>
+          <h1 className="text-2xl font-bold text-text-primary">Service Tickets</h1>
+          <p className="text-text-secondary">Manage customer service tickets</p>
         </div>
         <Link to="/tickets/new">
           <Button>Create New Ticket</Button>
@@ -119,28 +119,22 @@ const TicketList: React.FC = () => {
               onChange={setPriorityFilter}
             />
           </div>
-          <div className="flex items-end md:items-center">
-            <div className="flex items-center">
-              <input
-                id="archive-toggle"
-                type="checkbox"
-                checked={showArchived}
-                onChange={() => setShowArchived(!showArchived)}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-700 rounded bg-gray-800"
-              />
-              <label htmlFor="archive-toggle" className="ml-2 text-sm text-gray-300">
-                {showArchived ? 'Showing Archived' : 'Show Archived'} 
-              </label>
-            </div>
+          <div className="flex items-end"> {/* Removed md:items-center to align button baseline */}
+            <Button
+              // Use default primary styling by removing variant="outline"
+              onClick={() => setShowArchived(!showArchived)}
+            >
+              {showArchived ? 'View Active' : 'View Archived'}
+            </Button>
           </div>
         </div>
       </Card>
       
       <div className="space-y-4">
         {filteredTickets.length === 0 ? (
-          <div className="bg-gray-800 rounded-lg border border-gray-700 p-6 text-center">
-            <h3 className="text-lg font-medium text-white mb-2">No Tickets Found</h3>
-            <p className="text-gray-400 mb-4">
+          <div className="card text-center"> {/* Use the .card component class */}
+            <h3 className="text-lg font-medium text-text-primary mb-2">No Tickets Found</h3>
+            <p className="text-text-secondary mb-4">
               {tickets.length === 0
                 ? 'There are no service tickets in the system.'
                 : 'No tickets match your current filters.'}
@@ -190,7 +184,7 @@ const TicketList: React.FC = () => {
                 <div className="flex flex-col md:flex-row justify-between gap-4">
                   <div>
                     <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-lg font-medium text-white">
+                      <h3 className="text-lg font-medium text-text-primary">
                         Ticket #{ticket.ticket_number}
                       </h3>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${ticketStatusColors[ticket.status]}`}>
@@ -205,8 +199,8 @@ const TicketList: React.FC = () => {
                         </span>
                       )}
                     </div>
-                    <p className="text-gray-300 mb-2 line-clamp-2">{ticket.problem_description}</p>
-                    <div className="text-sm text-gray-400">
+                    <p className="text-text-secondary mb-2 line-clamp-2">{ticket.problem_description}</p>
+                    <div className="text-sm text-text-secondary">
                       Created: {formatDate(ticket.created_at)}
                       {ticket.estimated_completion && (
                         <span className="ml-4">
@@ -217,12 +211,12 @@ const TicketList: React.FC = () => {
                   </div>
                   <div className="flex flex-col items-end justify-between">
                     <div className="text-right">
-                      <div className="text-lg font-medium text-white">
-                        {formatCurrency(ticket.total)}
+                      <div className="text-lg font-medium text-text-primary">
+                        {formatCurrency(ticket.total ?? 0)}
                       </div>
-                      <div className="text-sm text-gray-400">
-                        Parts: {formatCurrency(ticket.total_parts_cost)} | 
-                        Labor: {formatCurrency(ticket.labor_cost)}
+                      <div className="text-sm text-text-secondary">
+                        Parts: {formatCurrency(ticket.total_parts_cost ?? 0)} |
+                        Labor: {formatCurrency(ticket.labor_cost ?? 0)}
                       </div>
                     </div>
                     <div className="flex space-x-2 mt-3 md:mt-0">
