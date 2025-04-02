@@ -126,13 +126,17 @@ export const PartsSelector: React.FC<PartsSelectorProps> = ({
         {/* Search results dropdown */}
         {showResults && searchTerm.length > 0 && (
           <div className="relative">
-            <div className="absolute z-10 w-full mt-1 bg-gray-800 border border-gray-700 rounded-md shadow-lg max-h-60 overflow-auto">
+             {/* Dropdown container styling for light/dark */}
+            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg max-h-60 overflow-auto">
               {loading ? (
-                <div className="p-3 text-center text-gray-400">Loading...</div>
+                 /* Text color for light/dark */
+                <div className="p-3 text-center text-gray-500 dark:text-gray-400">Loading...</div>
               ) : error ? (
+                 /* Error color is likely fine */
                 <div className="p-3 text-center text-red-500">{error}</div>
               ) : searchResults.length === 0 ? (
-                <div className="p-3 text-center text-gray-400">
+                 /* Text color for light/dark */
+                <div className="p-3 text-center text-gray-500 dark:text-gray-400">
                   {searchTerm.length < 2 ? 'Type to search' : 'No parts found'}
                 </div>
               ) : (
@@ -140,13 +144,15 @@ export const PartsSelector: React.FC<PartsSelectorProps> = ({
                   {searchResults.map((part) => (
                     <li
                       key={part.id}
-                      className={`px-4 py-2 hover:bg-gray-700 cursor-pointer border-b border-gray-700 last:border-0 ${
-                        selectedParts.some(p => p.part.id === part.id) ? 'opacity-50' : ''
+                       /* List item styling for light/dark */
+                      className={`px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer border-b border-gray-200 dark:border-gray-700 last:border-0 ${
+                        selectedParts.some(p => p.part.id === part.id) ? 'opacity-50 cursor-not-allowed' : '' /* Adjusted disabled style */
                       }`}
-                      onClick={() => handlePartClick(part)}
+                      onClick={() => !selectedParts.some(p => p.part.id === part.id) && handlePartClick(part)} // Prevent clicking if already selected
                     >
-                      <div className="font-medium text-white">{part.name}</div>
-                      <div className="text-sm text-gray-400 flex justify-between">
+                       {/* Text colors for light/dark */}
+                      <div className="font-medium text-gray-900 dark:text-white">{part.name}</div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400 flex justify-between">
                         <span>SKU: {part.sku}</span>
                         <span>${part.retail_price.toFixed(2)}</span>
                       </div>
@@ -161,62 +167,73 @@ export const PartsSelector: React.FC<PartsSelectorProps> = ({
 
       {/* Selected parts table */}
       {selectedParts.length > 0 && (
-        <div className="border border-gray-700 rounded-md overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-700">
-            <thead className="bg-gray-800">
+         /* Table container styling for light/dark */
+        <div className="border border-gray-200 dark:border-gray-700 rounded-md overflow-hidden">
+           {/* Table divider color for light/dark */}
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+             {/* Table header styling for light/dark */}
+            <thead className="bg-gray-50 dark:bg-gray-800">
               <tr>
-                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                 {/* Table header text color for light/dark */}
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Part
                 </th>
-                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Quantity
                 </th>
-                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Price
                 </th>
-                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Total
                 </th>
-                <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">
+                <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-gray-800 divide-y divide-gray-700">
+             {/* Table body styling for light/dark */}
+            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
               {selectedParts.map(({ part, quantity, price }) => (
                 <tr key={part.id}>
                   <td className="px-4 py-2 whitespace-nowrap">
-                    <div className="text-sm font-medium text-white">{part.name}</div>
-                    <div className="text-xs text-gray-400">SKU: {part.sku}</div>
+                     {/* Text colors for light/dark */}
+                    <div className="text-sm font-medium text-gray-900 dark:text-white">{part.name}</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400">SKU: {part.sku}</div>
                   </td>
                   <td className="px-4 py-2 whitespace-nowrap">
+                     {/* Use .form-input for theme-aware styling */}
                     <input
                       type="number"
                       min="1"
                       value={quantity}
                       onChange={(e) => handleQuantityChange(part.id, parseInt(e.target.value) || 1)}
-                      className="w-16 bg-gray-700 border border-gray-600 rounded p-1 text-white text-sm"
+                      className="form-input w-16 p-1 text-sm" /* Adjusted padding/size */
                     />
                   </td>
                   <td className="px-4 py-2 whitespace-nowrap">
                     <div className="flex items-center">
-                      <span className="mr-1">$</span>
+                       {/* Text color for light/dark */}
+                      <span className="mr-1 text-gray-500 dark:text-gray-400">$</span>
+                       {/* Use .form-input for theme-aware styling */}
                       <input
                         type="number"
                         min="0"
                         step="0.01"
                         value={price}
                         onChange={(e) => handlePriceChange(part.id, parseFloat(e.target.value) || 0)}
-                        className="w-20 bg-gray-700 border border-gray-600 rounded p-1 text-white text-sm"
+                        className="form-input w-20 p-1 text-sm" /* Adjusted padding/size */
                       />
                     </div>
                   </td>
-                  <td className="px-4 py-2 whitespace-nowrap text-sm text-white">
+                   {/* Text color for light/dark */}
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                     ${(quantity * price).toFixed(2)}
                   </td>
                   <td className="px-4 py-2 whitespace-nowrap text-right">
                     <button
                       onClick={() => handleRemovePart(part.id)}
+                       /* Remove button color is likely fine */
                       className="text-red-500 hover:text-red-400"
                     >
                       Remove
@@ -224,11 +241,14 @@ export const PartsSelector: React.FC<PartsSelectorProps> = ({
                   </td>
                 </tr>
               ))}
-              <tr className="bg-gray-700">
-                <td colSpan={3} className="px-4 py-2 text-right text-sm font-medium text-white">
+               {/* Table footer styling for light/dark */}
+              <tr className="bg-gray-50 dark:bg-gray-700">
+                 {/* Text color for light/dark */}
+                <td colSpan={3} className="px-4 py-2 text-right text-sm font-medium text-gray-900 dark:text-white">
                   Total Parts Cost:
                 </td>
-                <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-white">
+                 {/* Text color for light/dark */}
+                <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
                   ${totalPartsCost.toFixed(2)}
                 </td>
                 <td></td>
@@ -239,9 +259,10 @@ export const PartsSelector: React.FC<PartsSelectorProps> = ({
       )}
       
       {selectedParts.length === 0 && (
-        <div className="text-center py-6 bg-gray-800 border border-gray-700 rounded-md">
-          <p className="text-gray-400">No parts added yet</p>
-          <p className="text-gray-500 text-sm mt-1">Search above to add parts to this ticket</p>
+         /* Placeholder styling for light/dark */
+        <div className="text-center py-6 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md">
+          <p className="text-gray-500 dark:text-gray-400">No parts added yet</p>
+          <p className="text-gray-400 dark:text-gray-500 text-sm mt-1">Search above to add parts to this ticket</p>
         </div>
       )}
     </div>

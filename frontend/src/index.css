@@ -3,6 +3,14 @@
 @tailwind utilities;
 
 :root {
+  /* Light Theme */
+  --color-background: #FFFFFF;
+  --color-text: #292F2F;
+  --color-primary: #E86C2C;
+  --color-secondary: #4A6E8A;
+  --color-accent: #F39C6B;
+  --color-border: #E5E7E7;
+
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -13,41 +21,65 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.dark {
+  /* Dark Theme */
+  --color-background: #1A1E1E;
+  --color-text: #F0F2F2;
+  --color-primary: #E86C2C; /* Same as light */
+  --color-secondary: #4A6E8A; /* Same as light */
+  --color-accent: #F39C6B; /* Same as light */
+  --color-border: #3A4040;
+}
+
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  @apply bg-gray-900 text-white;
+  /* Use CSS variables for background and text */
+  @apply bg-[var(--color-background)] text-[var(--color-text)];
 }
 
 /* Custom Tailwind Utilities */
 @layer components {
   .btn-primary {
-    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded transition duration-150 ease-in-out;
+    /* Use CSS Variables, ensure hover text uses --color-text */
+    @apply bg-[var(--color-primary)] hover:bg-[var(--color-accent)] text-[var(--color-text)] font-medium py-2 px-4 rounded transition duration-150 ease-in-out;
+    /* Dark mode uses the same variables */
   }
-  
+
   .btn-secondary {
-    @apply bg-secondary-600 hover:bg-secondary-700 text-white font-medium py-2 px-4 rounded transition duration-150 ease-in-out;
+    /* Light mode: Use CSS Variables, ensure hover text uses --color-text */
+    @apply bg-[var(--color-secondary)] hover:bg-[var(--color-accent)] text-[var(--color-text)] font-medium py-2 px-4 rounded transition duration-150 ease-in-out;
+    /* Dark mode: Use CSS Variables - Outline style, ensure hover text uses --color-text */
+    @apply dark:bg-transparent dark:border dark:border-[var(--color-secondary)] dark:text-[var(--color-secondary)] dark:hover:bg-[var(--color-accent)] dark:hover:text-[var(--color-text)];
   }
-  
+
   .btn-danger {
     @apply bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded transition duration-150 ease-in-out;
   }
   
   .btn-outline {
-    @apply bg-transparent border border-gray-600 hover:bg-gray-700 text-gray-300 font-medium py-2 px-4 rounded transition duration-150 ease-in-out;
+    /* Use CSS Variables, ensure hover text uses --color-text */
+    @apply bg-transparent border border-[var(--color-border)] hover:bg-[var(--color-accent)] hover:text-[var(--color-text)] text-[var(--color-text)] font-medium py-2 px-4 rounded transition duration-150 ease-in-out;
+    /* Dark mode uses the same variables */
   }
   
   .card {
-    @apply bg-gray-800 rounded-lg shadow-md p-6 text-white border border-gray-700;
+    /* Use CSS Variables */
+    @apply bg-[var(--color-background)] rounded-lg shadow-md p-6 text-[var(--color-text)] border border-[var(--color-border)];
+    /* Dark mode uses the same variables */
   }
   
   .form-input {
-    @apply w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-primary-500;
+    /* Use CSS Variables */
+    @apply w-full px-3 py-2 bg-[var(--color-background)] border border-[var(--color-border)] rounded-md text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)];
+    /* Dark mode uses the same variables */
   }
 
   .form-label {
-    @apply block text-sm font-medium text-gray-300 mb-1;
+    /* Use CSS Variables */
+    @apply block text-sm font-medium text-[var(--color-text)] mb-1;
+    /* Dark mode uses the same variables */
   }
 
   .form-error {
@@ -55,7 +87,9 @@ body {
   }
 
   .form-helper {
-    @apply mt-1 text-sm text-gray-400;
+    /* Use CSS Variables - Using secondary for helper text */
+    @apply mt-1 text-sm text-[var(--color-secondary)];
+    /* Dark mode uses the same variables */
   }
   
   .badge {
@@ -63,23 +97,30 @@ body {
   }
 
   .badge-success {
-    @apply badge bg-green-900 text-green-200;
+    /* Light mode */ @apply badge bg-green-100 text-green-800;
+    /* Dark mode */ @apply dark:bg-green-900 dark:text-green-200;
   }
 
   .badge-warning {
-    @apply badge bg-yellow-900 text-yellow-200;
+    /* Light mode */ @apply badge bg-yellow-100 text-yellow-800;
+    /* Dark mode */ @apply dark:bg-yellow-900 dark:text-yellow-200;
   }
 
   .badge-error {
-    @apply badge bg-red-900 text-red-200;
+    /* Light mode */ @apply badge bg-red-100 text-red-800;
+    /* Dark mode */ @apply dark:bg-red-900 dark:text-red-200;
   }
 
   .badge-info {
-    @apply badge bg-blue-900 text-blue-200;
+    /* Use CSS Variables - Using secondary color */
+    @apply badge bg-[var(--color-secondary)] bg-opacity-20 text-[var(--color-secondary)];
+    /* Dark mode uses the same variables */
   }
 
   .badge-neutral {
-    @apply badge bg-gray-700 text-gray-200;
+    /* Use CSS Variables - Using border color */
+    @apply badge bg-[var(--color-border)] text-[var(--color-text)];
+    /* Dark mode uses the same variables */
   }
   
   /* Status indicator styles */
@@ -93,22 +134,26 @@ body {
   }
 
   .status-indicator.success:before {
-    @apply bg-green-500;
+    @apply bg-green-500; /* Keep same for both modes */
   }
 
   .status-indicator.warning:before {
-    @apply bg-yellow-500;
+    @apply bg-yellow-500; /* Keep same for both modes */
   }
 
   .status-indicator.error:before {
-    @apply bg-red-500;
+    @apply bg-red-500; /* Keep same for both modes */
   }
 
   .status-indicator.info:before {
-    @apply bg-blue-500;
+     /* Use CSS Variables - Using secondary color */
+    @apply bg-[var(--color-secondary)];
+    /* Dark mode uses the same variables */
   }
 
   .status-indicator.neutral:before {
-    @apply bg-gray-500;
+     /* Use CSS Variables - Using border color */
+    @apply bg-[var(--color-border)];
+    /* Dark mode uses the same variables */
   }
 }

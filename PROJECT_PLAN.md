@@ -182,9 +182,11 @@ Future versions will expand to include Shopify integration and advanced features
 - [x] Create parts management for tickets
 
 ### Phase 5: Search & Filtering System (Week 7)
-- [ ] Develop advanced search functionality
+- [ ] Develop advanced search functionality 
+  - [ ] Search by customer name, phone, ticket number, bike description
+  - [ ] Filter by status, date range, priority level, technician assigned, bike type 
+  - [ ] Implement text search with fuzzy matching & suggestions 
 - [ ] Implement filtering by multiple criteria
-- [ ] Create saved searches/filters
 - [ ] Build pagination for large result sets
 - [ ] Implement sorting options
 

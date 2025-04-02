@@ -220,7 +220,8 @@ export const TicketForm: React.FC<TicketFormProps> = ({
               step="0.01"
               value={laborCost}
               onChange={(e) => setLaborCost(e.target.value)}
-              leftIcon={<span className="text-gray-400">$</span>}
+              /* Icon color for light/dark */
+              leftIcon={<span className="text-gray-400 dark:text-gray-500">$</span>}
             />
           </div>
         </FormGroup>
@@ -238,17 +239,24 @@ export const TicketForm: React.FC<TicketFormProps> = ({
       <Card>
         <div className="flex justify-between items-center">
           <div>
-            <h3 className="text-lg font-medium text-white">Ticket Total</h3>
+             {/* Heading text color inherits from Card */}
+            <h3 className="text-lg font-medium">Ticket Total</h3>
             <div className="mt-2 space-y-1">
               <div className="flex justify-between text-sm">
-                <span className="text-gray-400">Parts:</span>
-                <span className="text-white">${totalPartsCost.toFixed(2)}</span>
+                 {/* Label text color for light/dark */}
+                <span className="text-gray-600 dark:text-gray-400">Parts:</span>
+                 {/* Value text color inherits from Card */}
+                <span>${totalPartsCost.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-gray-400">Labor:</span>
-                <span className="text-white">${(parseFloat(laborCost) || 0).toFixed(2)}</span>
+                 {/* Label text color for light/dark */}
+                <span className="text-gray-600 dark:text-gray-400">Labor:</span>
+                 {/* Value text color inherits from Card */}
+                <span>${(parseFloat(laborCost) || 0).toFixed(2)}</span>
               </div>
-              <div className="flex justify-between font-medium pt-1 border-t border-gray-700">
+               {/* Total row styling for light/dark */}
+              <div className="flex justify-between font-medium pt-1 border-t border-gray-200 dark:border-gray-700">
+                 {/* Total text color inherits from Card */}
                 <span>Total:</span>
                 <span>${totalCost.toFixed(2)}</span>
               </div>

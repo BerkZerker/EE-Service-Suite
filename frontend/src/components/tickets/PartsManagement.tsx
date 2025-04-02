@@ -87,7 +87,8 @@ const PartsManagement: React.FC<PartsManagementProps> = ({
   return (
     <Card className={className}>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold text-white">Parts & Labor</h2>
+        {/* Heading text color inherits from Card */}
+        <h2 className="text-xl font-semibold">Parts & Labor</h2>
         {!addingParts && (
           <Button
             size="sm"
@@ -99,16 +100,19 @@ const PartsManagement: React.FC<PartsManagementProps> = ({
       </div>
       
       {error && (
-        <div className="bg-red-900/50 border border-red-700 text-red-100 px-4 py-3 rounded mb-4">
+        // Error message styling for light/dark
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 dark:bg-red-900/50 dark:border-red-700 dark:text-red-100">
           {error}
         </div>
       )}
       
       {/* Add Parts Form */}
       {addingParts && (
-        <div className="mb-6 p-4 border border-gray-700 rounded-lg">
+        // Section border for light/dark
+        <div className="mb-6 p-4 border border-gray-200 rounded-lg dark:border-gray-700">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-medium text-white">Add Parts</h3>
+             {/* Heading text color inherits */}
+            <h3 className="text-lg font-medium">Add Parts</h3>
             <Button
               size="sm"
               variant="outline"
@@ -150,26 +154,31 @@ const PartsManagement: React.FC<PartsManagementProps> = ({
       {/* Parts Table */}
       {parts.length > 0 ? (
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-700">
+           {/* Table divider color for light/dark */}
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead>
               <tr>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Part</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Quantity</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Price</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Total</th>
-                <th className="px-3 py-3 text-xs font-medium text-gray-400 uppercase tracking-wider"></th>
+                 {/* Table header text color for light/dark */}
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">Part</th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">Quantity</th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">Price</th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">Total</th>
+                <th className="px-3 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-700">
+             {/* Table body divider color for light/dark */}
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               {parts.map(part => (
                 <tr key={part.id}>
-                  <td className="px-3 py-4 whitespace-nowrap text-sm text-white">{part.part_name}</td>
-                  <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-300">{part.quantity}</td>
-                  <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-300">{formatCurrency(part.price)}</td>
-                  <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-300">{formatCurrency(part.price * part.quantity)}</td>
+                   {/* Table cell text color for light/dark */}
+                  <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{part.part_name}</td>
+                  <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">{part.quantity}</td>
+                  <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">{formatCurrency(part.price)}</td>
+                  <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">{formatCurrency(part.price * part.quantity)}</td>
                   <td className="px-3 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <button
                       onClick={() => handleRemovePart(part.part_id)}
+                       // Remove button text color already theme-aware (red)
                       className="text-red-500 hover:text-red-400 transition-colors"
                     >
                       Remove
@@ -179,26 +188,29 @@ const PartsManagement: React.FC<PartsManagementProps> = ({
               ))}
               {/* Labor row */}
               <tr>
-                <td className="px-3 py-4 whitespace-nowrap text-sm text-white">Labor</td>
-                <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-300">-</td>
-                <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-300">-</td>
-                <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-300">{formatCurrency(laborCost)}</td>
+                 {/* Table cell text color for light/dark */}
+                <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">Labor</td>
+                <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">-</td>
+                <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">-</td>
+                <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">{formatCurrency(laborCost)}</td>
                 <td></td>
               </tr>
             </tbody>
             <tfoot>
               <tr>
-                <td colSpan={3} className="px-3 py-4 whitespace-nowrap text-sm font-medium text-white text-right">Total</td>
-                <td className="px-3 py-4 whitespace-nowrap text-sm font-medium text-white">{formatCurrency(totalCost)}</td>
+                 {/* Table footer text color for light/dark */}
+                <td colSpan={3} className="px-3 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white text-right">Total</td>
+                <td className="px-3 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{formatCurrency(totalCost)}</td>
                 <td></td>
               </tr>
             </tfoot>
           </table>
         </div>
       ) : (
-        <div className="bg-gray-800 rounded p-4 text-center">
-          <p className="text-gray-400">No parts added to this ticket</p>
-          <p className="text-gray-500 text-sm mt-1">Click "Add Parts" to add parts to this ticket</p>
+         // Placeholder styling for light/dark
+        <div className="bg-gray-50 rounded p-4 text-center dark:bg-gray-800">
+          <p className="text-gray-500 dark:text-gray-400">No parts added to this ticket</p>
+          <p className="text-gray-400 dark:text-gray-500 text-sm mt-1">Click "Add Parts" to add parts to this ticket</p>
         </div>
       )}
     </Card>

@@ -69,7 +69,8 @@ const CustomerBikeInfo: React.FC<CustomerBikeInfoProps> = ({
     return (
       <Card className={className}>
         <div className="text-center py-6">
-          <p className="text-gray-400">No customer or bike information available</p>
+           {/* Placeholder text color for light/dark */}
+          <p className="text-gray-500 dark:text-gray-400">No customer or bike information available</p>
         </div>
       </Card>
     );
@@ -77,44 +78,54 @@ const CustomerBikeInfo: React.FC<CustomerBikeInfoProps> = ({
   
   return (
     <Card className={className}>
-      <h2 className="text-xl font-semibold text-white mb-4">Customer & Bike Information</h2>
+       {/* Heading text color inherits from Card */}
+      <h2 className="text-xl font-semibold mb-4">Customer & Bike Information</h2>
       
       {error ? (
-        <div className="bg-red-900/50 border border-red-700 text-red-100 px-4 py-3 rounded">
+         /* Error message styling for light/dark */
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded dark:bg-red-900/50 dark:border-red-700 dark:text-red-100">
           {error}
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
           {/* Bike Information */}
           <div>
-            <h3 className="text-sm font-medium text-gray-400">Bike Details</h3>
+             {/* Sub-heading text color for light/dark */}
+            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Bike Details</h3>
             {bike ? (
               <div className="mt-2">
-                <p className="text-white">{bike.make} {bike.model}</p>
-                {bike.serial_number && <p className="text-sm text-gray-300">Serial Number: {bike.serial_number}</p>}
+                 {/* Main text color inherits from Card */}
+                <p>{bike.make} {bike.model}</p>
+                 {/* Secondary text color for light/dark */}
+                {bike.serial_number && <p className="text-sm text-gray-600 dark:text-gray-300">Serial Number: {bike.serial_number}</p>}
                 {bike.purchase_date && (
-                  <p className="text-sm text-gray-300">
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
                     Purchase Date: {new Date(bike.purchase_date).toLocaleDateString()}
                   </p>
                 )}
               </div>
             ) : (
-              <p className="mt-1 text-gray-400">Bike information not available</p>
+               /* Placeholder text color for light/dark */
+              <p className="mt-1 text-gray-500 dark:text-gray-400">Bike information not available</p>
             )}
           </div>
           
           {/* Customer Information */}
           <div>
-            <h3 className="text-sm font-medium text-gray-400">Customer Details</h3>
+             {/* Sub-heading text color for light/dark */}
+            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Customer Details</h3>
             {customer ? (
               <div className="mt-2">
-                <p className="text-white">{customer.full_name}</p>
-                <p className="text-sm text-gray-300">{customer.email}</p>
-                <p className="text-sm text-gray-300">{customer.phone}</p>
-                {customer.address && <p className="text-sm text-gray-300">{customer.address}</p>}
+                 {/* Main text color inherits from Card */}
+                <p>{customer.full_name}</p>
+                 {/* Secondary text color for light/dark */}
+                <p className="text-sm text-gray-600 dark:text-gray-300">{customer.email}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">{customer.phone}</p>
+                {customer.address && <p className="text-sm text-gray-600 dark:text-gray-300">{customer.address}</p>}
               </div>
             ) : (
-              <p className="mt-1 text-gray-400">Customer information not available</p>
+               /* Placeholder text color for light/dark */
+              <p className="mt-1 text-gray-500 dark:text-gray-400">Customer information not available</p>
             )}
           </div>
         </div>

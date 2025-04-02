@@ -1,5 +1,6 @@
-import { Routes, Route } from 'react-router-dom'
-import { Suspense, lazy } from 'react'
+import { Routes, Route } from 'react-router-dom';
+import { Suspense, lazy } from 'react';
+import Spinner from './components/ui/Spinner'; // Import Spinner
 
 // Layouts
 const MainLayout = lazy(() => import('./components/layout/MainLayout'))
@@ -14,11 +15,18 @@ const Login = lazy(() => import('./pages/Login'))
 const TicketList = lazy(() => import('./pages/TicketList'))
 const CreateTicket = lazy(() => import('./pages/CreateTicket'))
 const EditTicket = lazy(() => import('./pages/EditTicket'))
-const TicketDetail = lazy(() => import('./pages/TicketDetail'))
+const TicketDetail = lazy(() => import('./pages/TicketDetail'));
 
 function App() {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center h-screen bg-gray-900 text-white">Loading...</div>}>
+    // Update Suspense fallback to use theme variables and Spinner
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center h-screen bg-[var(--color-background)] text-[var(--color-text)]">
+          <Spinner size="lg" variant="primary" /> {/* Use themed spinner */}
+        </div>
+      }
+    >
       <Routes>
         {/* Public routes */}
         <Route path="/login" element={<Login />} />

@@ -13,25 +13,32 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const getVariantClasses = (variant: ButtonVariant): string => {
+  // Return global CSS class names defined in index.css
+  // These classes already use the CSS variables for theming.
   switch (variant) {
     case 'primary':
-      return 'bg-primary-600 hover:bg-primary-700 text-white';
+      return 'btn-primary'; // Uses --color-primary (orange)
     case 'secondary':
-      return 'bg-secondary-600 hover:bg-secondary-700 text-white';
+      return 'btn-secondary'; // Uses --color-secondary (slate blue)
     case 'danger':
+      // Keep specific Tailwind classes for danger as no theme color was provided
       return 'bg-red-600 hover:bg-red-700 text-white';
     case 'success':
+      // Keep specific Tailwind classes for success
       return 'bg-green-600 hover:bg-green-700 text-white';
     case 'warning':
+      // Keep specific Tailwind classes for warning
       return 'bg-yellow-500 hover:bg-yellow-600 text-black';
     case 'outline':
-      return 'bg-transparent border border-gray-600 hover:bg-gray-700 text-gray-300';
+      return 'btn-outline'; // Uses --color-border, --color-accent, etc.
     case 'ghost':
-      return 'bg-transparent hover:bg-gray-700 text-gray-300';
+      // Map ghost to outline for now
+      return 'btn-outline border-transparent hover:border-[var(--color-border)]'; // Make border transparent initially
     case 'subtle':
-      return 'bg-gray-800 hover:bg-gray-700 text-gray-300';
-    default:
-      return 'bg-primary-600 hover:bg-primary-700 text-white';
+      // Map subtle to outline with slightly different hover
+       return 'btn-outline border-transparent bg-opacity-10 hover:bg-opacity-20'; // Use background opacity
+    default: // Default to primary styling
+      return 'btn-primary';
   }
 };
 
@@ -73,7 +80,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         ref={ref}
-        className={`inline-flex items-center justify-center font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${variantClasses} ${sizeClasses} ${className}`}
+        // Use CSS variable for focus ring color
+        className={`inline-flex items-center justify-center font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)] dark:focus:ring-offset-[var(--color-background)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${variantClasses} ${sizeClasses} ${className}`}
         disabled={disabled || isLoading}
         {...props}
       >

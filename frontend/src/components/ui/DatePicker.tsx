@@ -33,20 +33,23 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
     return (
       <div className={className}>
         {label && (
-          <label htmlFor={datePickerId} className="block text-sm font-medium text-gray-300 mb-1">
+          // Use .form-label for theme-aware styling
+          <label htmlFor={datePickerId} className="form-label">
             {label}
           </label>
         )}
-        <div className="relative rounded-md shadow-sm">
+        {/* Removed relative rounded-md shadow-sm, handled by .form-input */}
+        <div className="relative"> 
           <input
             ref={ref}
             id={datePickerId}
             type="date"
+            // Apply .form-input class
+            // Error border is handled within .form-input logic or added explicitly
+            // Note: Date picker icon styling might be browser-dependent
             className={`
-              w-full rounded-md shadow-sm 
-              px-3 py-2 bg-gray-700 border 
-              ${error ? 'border-red-500' : 'border-gray-600'} 
-              text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500
+              form-input
+              ${error ? 'border-red-500 focus:ring-red-500' : ''} {/* Add specific error border/focus */}
             `}
             aria-invalid={error ? 'true' : 'false'}
             aria-describedby={helperText || error ? `${datePickerId}-description` : undefined}
@@ -55,9 +58,10 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
           />
         </div>
         {(helperText || error) && (
+          // Use .form-error or .form-helper for theme-aware styling
           <p
             id={`${datePickerId}-description`}
-            className={`mt-1 text-sm ${error ? 'text-red-500' : 'text-gray-400'}`}
+            className={error ? 'form-error' : 'form-helper'}
           >
             {error || helperText}
           </p>

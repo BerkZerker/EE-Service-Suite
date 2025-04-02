@@ -7,7 +7,9 @@ const ProtectedRoute = () => {
   // Show loading state while checking authentication
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
+      // Loading screen background/text for light/dark
+      <div className="flex items-center justify-center h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+        {/* Spinner color uses primary */}
         <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-primary-500"></div>
       </div>
     );
