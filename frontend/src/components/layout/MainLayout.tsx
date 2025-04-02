@@ -80,12 +80,12 @@ const MainLayout = () => {
                 <NavLink 
                   to={link.to} 
                   className={({ isActive }) =>
-                    `flex items-center p-2 space-x-2 rounded-md transition-colors duration-150 ${
+                    `flex items-center p-2 space-x-2 rounded-md transition-colors duration-150 border border-transparent ${ /* Add transparent border */
                       isActive
                         // Use CSS variables for active link style - Use --color-primary-text for light mode text
                         ? 'bg-[var(--color-primary)] text-[var(--color-primary-text)] dark:text-[var(--color-text)]' // Use primary-text for light, keep dark explicit
-                        // Use CSS variables for inactive link style, ensure hover text uses --color-primary-text
-                        : 'text-[var(--color-text)] hover:bg-[var(--color-accent)] hover:text-[var(--color-primary-text)]'
+                        // Use CSS variables for inactive link style, apply primary outline hover
+                        : 'text-[var(--color-text)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]' /* Apply primary outline hover */
                     }`
                   }
                   end // Use 'end' prop for Dashboard link to avoid matching all routes starting with '/'
@@ -101,12 +101,12 @@ const MainLayout = () => {
                 <NavLink 
                   to="/admin" 
                   className={({ isActive }) =>
-                    `flex items-center p-2 space-x-2 rounded-md transition-colors duration-150 ${
+                    `flex items-center p-2 space-x-2 rounded-md transition-colors duration-150 border border-transparent ${ /* Add transparent border */
                       isActive
                         // Use CSS variables for active link style - Use --color-primary-text for light mode text
                         ? 'bg-[var(--color-primary)] text-[var(--color-primary-text)] dark:text-[var(--color-text)]' // Use primary-text for light, keep dark explicit
-                        // Use CSS variables for inactive link style, ensure hover text uses --color-primary-text
-                        : 'text-[var(--color-text)] hover:bg-[var(--color-accent)] hover:text-[var(--color-primary-text)]'
+                        // Use CSS variables for inactive link style, apply primary outline hover
+                        : 'text-[var(--color-text)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]' /* Apply primary outline hover */
                     }`
                   }
                 >

@@ -7,9 +7,9 @@
   --color-background: #FFFFFF;
   --color-card: #e8e8e8; /* Darker Charcoal */
   --color-text: #1b1b1b; /* Keeping existing text color */
-  --color-primary: #DD7D45; /* Soft Coral */
-  --color-secondary: #DD7D45; /* Steel Blue */
-  --color-accent: #E7945F; /* Peach - highlight */
+  --color-primary: #CF6A33; /* Soft Coral */
+  --color-secondary: #CF6A33; /* Steel Blue */
+  --color-accent: #DD7D45; /* Peach - highlight */
   --color-border: #d0d0d0; /* Existing light gray */
   --color-primary-text: #FFFFFF; /* White text for primary elements */
 
@@ -34,9 +34,9 @@
   --color-background: #101010; /* Charcoal */
   --color-card: #272727; /* Darker Charcoal */
   --color-text: #e6e6e6; /* Keeping existing text color */
-  --color-primary: #DD7D45; /* Burnt Orange */
-  --color-secondary: #DD7D45; /* Navy Slate */
-  --color-accent: #E7945F; /* Terracotta - highlight */
+  --color-primary: #CF6A33; /* Burnt Orange */
+  --color-secondary: #CF6A33; /* Navy Slate */
+  --color-accent: #DD7D45; /* Terracotta - highlight */
   --color-border: #4c4c4c; /* Dark Gunmetal */
 }
 
@@ -58,16 +58,22 @@ body {
 @layer components {
   .btn-primary {
     /* Use CSS Variables - Use primary-text for light mode */
-    @apply bg-[var(--color-primary)] hover:bg-[var(--color-accent)] text-[var(--color-primary-text)] font-medium py-2 px-4 rounded transition duration-150 ease-in-out;
-    /* Explicitly set dark mode text color (uses dark theme's --color-text) */
-    @apply dark:text-[var(--color-text)];
+    @apply bg-[var(--color-primary)] text-[var(--color-primary-text)] font-medium py-2 px-4 rounded transition duration-150 ease-in-out border border-transparent; /* Add transparent border for layout consistency */
+    /* Hover: Primary outline */
+    @apply hover:bg-transparent hover:border-[var(--color-primary)] hover:text-[var(--color-primary)];
+    /* Dark mode: Explicitly set text color, same hover effect */
+    @apply dark:text-[var(--color-text)] dark:hover:text-[var(--color-primary)];
   }
 
   .btn-secondary {
-    /* Light mode: Use CSS Variables, ensure hover text uses --color-primary-text */
-    @apply bg-[var(--color-secondary)] hover:bg-[var(--color-accent)] text-[var(--color-text)] hover:text-[var(--color-primary-text)] font-medium py-2 px-4 rounded transition duration-150 ease-in-out;
-    /* Dark mode: Use CSS Variables - Outline style, ensure hover text uses --color-text */
-    @apply dark:bg-transparent dark:border dark:border-[var(--color-secondary)] dark:text-[var(--color-secondary)] dark:hover:bg-[var(--color-accent)] dark:hover:text-[var(--color-text)];
+    /* Light mode: Use CSS Variables */
+    @apply bg-[var(--color-secondary)] text-[var(--color-text)] font-medium py-2 px-4 rounded transition duration-150 ease-in-out border border-transparent; /* Add transparent border */
+    /* Hover: Primary outline */
+    @apply hover:bg-transparent hover:border-[var(--color-primary)] hover:text-[var(--color-primary)];
+    /* Dark mode: Outline style */
+    @apply dark:bg-transparent dark:border dark:border-[var(--color-secondary)] dark:text-[var(--color-secondary)];
+    /* Dark Hover: Primary outline */
+    @apply dark:hover:border-[var(--color-primary)] dark:hover:text-[var(--color-primary)] dark:hover:bg-transparent; /* Ensure bg stays transparent */
   }
 
   .btn-danger {
@@ -75,9 +81,11 @@ body {
   }
   
   .btn-outline {
-    /* Use CSS Variables, ensure hover text uses --color-primary-text */
-    @apply bg-transparent border border-[var(--color-border)] hover:bg-[var(--color-accent)] hover:text-[var(--color-primary-text)] text-[var(--color-text)] font-medium py-2 px-4 rounded transition duration-150 ease-in-out;
-    /* Dark mode uses the same variables */
+    /* Use CSS Variables */
+    @apply bg-transparent border border-[var(--color-border)] text-[var(--color-text)] font-medium py-2 px-4 rounded transition duration-150 ease-in-out;
+    /* Hover: Primary outline */
+    @apply hover:border-[var(--color-primary)] hover:text-[var(--color-primary)];
+    /* Dark mode uses the same variables and hover effect */
   }
   
   .card {
