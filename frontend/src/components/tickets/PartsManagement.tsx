@@ -207,7 +207,8 @@ const PartsManagement: React.FC<PartsManagementProps> = ({
           </table>
         </div>
       ) : (
-        <div className="bg-[var(--color-background)] rounded p-4 text-center">
+        // Remove explicit background, let it inherit from Card
+        <div className="rounded p-4 text-center"> 
           <p className="text-theme-text">No parts added to this ticket</p>
           <p className="text-theme-secondary text-sm mt-1">Click "Add Parts" to add parts to this ticket</p>
         </div>

@@ -259,8 +259,8 @@ export const PartsSelector: React.FC<PartsSelectorProps> = ({
       )}
       
       {selectedParts.length === 0 && (
-         /* Placeholder styling for light/dark */
-        <div className="text-center py-6 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md">
+         /* Placeholder styling - Use main background and theme border color to match input */
+        <div className="text-center py-6 bg-[var(--color-background)] border border-[var(--color-border)] rounded-md">
           <p className="text-gray-500 dark:text-gray-400">No parts added yet</p>
           <p className="text-gray-400 dark:text-gray-500 text-sm mt-1">Search above to add parts to this ticket</p>
         </div>
