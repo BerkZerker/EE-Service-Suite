@@ -227,14 +227,14 @@ const TicketList: React.FC = () => {
                       </Link>
                       {!ticket.is_archived && (
                         <Link to={`/tickets/${ticket.id}/edit`}>
-                          <Button size="sm">
+                          <Button size="sm" variant="outline">
                             Edit
                           </Button>
                         </Link>
                       )}
                       <Button 
                         size="sm" 
-                        variant={ticket.is_archived ? "outline" : "subtle"}
+                        variant="outline" // Always use outline variant
                         onClick={handleArchiveToggle}
                         disabled={isArchiving === ticket.id}
                       >
