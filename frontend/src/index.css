@@ -4,8 +4,8 @@
 
 :root {
   /* Light Theme */
-  --color-background: #FFFFFF;
-  --color-card: #e8e8e8; /* Darker Charcoal */
+  --color-background: #e8e8e8;
+  --color-card: #ffffff; /* Darker Charcoal */
   --color-text: #1b1b1b; /* Keeping existing text color */
   --color-primary: #CF6A33; /* Soft Coral */
   --color-secondary: #CF6A33; /* Steel Blue */

@@ -38,7 +38,7 @@ The recommended way to run the application is using Docker:
 1. Create a virtual environment:
    ```bash
    cd backend
-   python3 -m venv venv
+   python -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
