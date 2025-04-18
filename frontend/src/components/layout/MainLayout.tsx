@@ -54,7 +54,7 @@ const MainLayout = () => {
       {/* Sidebar */}
       <aside
         // Use CSS variables for background and border
-        className={`fixed inset-y-0 z-10 flex flex-col flex-shrink-0 w-64 max-h-screen overflow-hidden transition-all transform bg-[var(--color-background)] border-r border-[var(--color-border)] shadow-lg lg:z-auto lg:static lg:shadow-none ${
+        className={`fixed inset-y-0 z-10 flex flex-col flex-shrink-0 w-64 max-h-screen overflow-hidden transition-all transform bg-[var(--color-card)] border-r border-[var(--color-border)] shadow-lg lg:z-auto lg:static lg:shadow-none ${ // Changed background to --color-card
           sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
@@ -123,7 +123,7 @@ const MainLayout = () => {
       <div className="flex flex-col flex-1 max-h-screen overflow-x-hidden overflow-y-auto">
         {/* Header */}
         {/* Use CSS variables for background and border */}
-        <header className="flex items-center justify-between flex-shrink-0 h-16 px-6 bg-[var(--color-background)] border-b border-[var(--color-border)]">
+        <header className="flex items-center justify-between flex-shrink-0 h-16 px-6 bg-[var(--color-card)] border-b border-[var(--color-border)]"> {/* Changed background to --color-card */}
           <button
             onClick={() => setSidebarOpen(true)}
              // Use CSS variables for text and hover background, ensure hover text uses --color-primary-text
