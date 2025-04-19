@@ -62,8 +62,8 @@ const Login = () => {
         
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
           {(error || submitError) && (
-             // Keep error styling specific for now
-            <div className="bg-red-900/50 text-red-200 p-3 rounded">
+            // Apply theme-specific error styling
+            <div className="bg-red-100 text-gray-900 dark:bg-red-900/50 dark:text-red-100 p-3 rounded"> 
               {error || submitError}
             </div>
           )}

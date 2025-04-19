@@ -70,10 +70,11 @@ const EditTicket: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-white">
+        {/* Updated text colors for better light mode visibility */}
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
           Edit Ticket #{ticket.ticket_number}
         </h1>
-        <p className="text-gray-400">Update the service ticket information</p>
+        <p className="text-gray-600 dark:text-gray-400">Update the service ticket information</p>
         {error && <p className="mt-2 text-red-500">{error}</p>}
       </div>
       

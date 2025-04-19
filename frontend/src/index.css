@@ -100,6 +100,17 @@ body {
     /* Dark mode uses the same variables */
   }
 
+  /* Override browser autofill styles */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus, 
+  input:-webkit-autofill:active {
+    -webkit-text-fill-color: var(--color-text) !important; /* Ensure text color matches theme */
+    -webkit-box-shadow: 0 0 0px 1000px var(--color-background) inset !important; /* Force background color */
+    transition: background-color 5000s ease-in-out 0s; /* Prevent background color change */
+    caret-color: var(--color-text); /* Ensure cursor color matches */
+  }
+
   .form-label {
     /* Use CSS Variables */
     @apply block text-sm font-medium text-[var(--color-text)] mb-1;

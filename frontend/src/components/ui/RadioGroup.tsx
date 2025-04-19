@@ -51,18 +51,18 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
                 value={option.value}
                 checked={value === option.value}
                 onChange={handleChange}
-                // Radio button theme styles: Light: gray border/bg. Dark: darker gray border/bg. Checked/Focus use primary color.
-                className="h-4 w-4 text-primary-600 border-gray-300 focus:ring-primary-500 bg-white dark:bg-gray-700 dark:border-gray-600"
+                // Use theme variables for border and background, keep primary for checked/focus
+                className="h-4 w-4 text-[var(--color-primary)] border-[var(--color-border)] focus:ring-[var(--color-primary)] bg-[var(--color-background)] focus:ring-offset-0 focus:ring-2" // Added focus:ring-2 and offset-0 for better visibility
               />
             </div>
             <div className="ml-3 text-sm">
-              {/* Option label theme styles */}
-              <label htmlFor={`${name}-${option.value}`} className="font-medium text-gray-700 dark:text-gray-300">
+              {/* Use theme variable for label text */}
+              <label htmlFor={`${name}-${option.value}`} className="font-medium text-[var(--color-text)]">
                 {option.label}
               </label>
               {option.description && (
-                 // Option description theme styles
-                <p className="text-gray-500 dark:text-gray-400">{option.description}</p>
+                 // Use theme variable (secondary) for description text
+                <p className="text-[var(--color-secondary)]">{option.description}</p>
               )}
             </div>
           </div>
